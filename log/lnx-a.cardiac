@@ -6,9 +6,9 @@ keeps the last three digits and SFT 03 leaves the thousands).
 
 Call: load x into the accumulator and JMP 12. It returns with the result in the accumulator.
 Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 65-68, 98; nothing else.
-Cost: at most 284 instructions a call, 134.9 on average over the domain, counted from the calling JMP to the
-return jump. Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 4; 110 of
-the 999 inputs are off.
+Cost: at most 283 instructions a call, 133.9 on average over the domain, counted from its first cell to its return
+jump. Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 4; 110 of the 999
+inputs are off.
 To move the routine down by d cells, subtract d from every address in its instructions that points into
 cells 12-98; addresses 00 and 99 stay as they are. It holds no address bases.
 

@@ -6,7 +6,7 @@ and 91 all 999 and sin 269, 270 and 271 all -999.
 
 Call: load x into the accumulator and JMP 33. It returns with the result in the accumulator.
 Cells 33-98 (66 cells). It writes cell 99 and, of its own cells, 64-65, 67, 72-73, 97-98; nothing else.
-Cost: at most 113 instructions a call, 71.8 on average over the domain, counted from the calling JMP to the return
+Cost: at most 112 instructions a call, 70.8 on average over the domain, counted from its first cell to its return
 jump. Worst error: 3 in the last digit (thousandths) against the correctly rounded value, at x = 60; 196 of
 the 360 inputs are off.
 Address bases: cell 71 holds ADD 75. To move the routine down by d cells, subtract d from every address in its

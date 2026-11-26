@@ -6,7 +6,7 @@ from the positive x axis, in whole degrees rounded, from 0 to 359 (a direction t
 
 Call: put x in cell 79, load y into the accumulator and JMP 12. It returns with the direction in the accumulator.
 Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 77-78, 80-85, 98; nothing else.
-Cost: at most 7925 instructions a call, 7140.2 on average over the domain, counted from the calling JMP to the
+Cost: at most 7924 instructions a call, 7139.2 on average over the domain, counted from its first cell to its
 return jump. Worst error: 0.699 degrees from the exact value, at y = -912, x = -890; 462,024 of the 3,996,000
 inputs are not the correctly rounded value.
 To move the routine down by d cells, subtract d from every address in its instructions that points into

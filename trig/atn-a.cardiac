@@ -5,7 +5,7 @@ from -84 to 84.
 
 Call: load n into the accumulator and JMP 18. It returns with the result in the accumulator.
 Cells 18-98 (81 cells). It writes cell 99 and, of its own cells, 81-88, 98; nothing else.
-Cost: at most 10110 instructions a call, 8169.4 on average over the domain, counted from the calling JMP to the
+Cost: at most 10109 instructions a call, 8168.4 on average over the domain, counted from its first cell to its
 return jump. Worst error: 0.567 degrees from the exact value, at n = -102; 20 of the 1,999 inputs are not the
 correctly rounded value.
 To move the routine down by d cells, subtract d from every address in its instructions that points into

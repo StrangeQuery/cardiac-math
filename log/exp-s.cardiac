@@ -8,9 +8,9 @@ each such step costs 0.0004 of relative error, since ln 10 is 2.302585.
 Call: put the thousands of v in cell 53, load its last three digits into the accumulator and JMP 12. It returns
 with 100 e^x in the accumulator.
 Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 33, 41, 52, 62-67, 98; nothing else.
-Cost: at most 911 instructions a call, 525.8 on average over the domain, counted from the calling JMP to the
-return jump. Worst error: 1 in the last digit (units of the third significant digit) against the correctly rounded
-value, at v = 1; 522 of the 2,303 inputs are off.
+Cost: at most 910 instructions a call, 524.8 on average over the domain, counted from its first cell to its return
+jump. Worst error: 1 in the last digit (units of the third significant digit) against the correctly rounded value,
+at v = 1; 522 of the 2,303 inputs are off.
 Address bases: cell 54 holds SUB 57. To move the routine down by d cells, subtract d from every address in its
 instructions that points into cells 12-98 and from the address bases; addresses 00 and 99 stay as they are.
 

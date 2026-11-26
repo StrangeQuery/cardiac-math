@@ -7,9 +7,9 @@ gives the number s times 10 to the power c - 2.
 
 Call: load m into the accumulator and JMP 12. It returns with the result in the accumulator.
 Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 33, 41, 52, 61-66, 98; nothing else.
-Cost: at most 912 instructions a call, 526.3 on average over the domain, counted from the calling JMP to the
-return jump. Worst error: 2 in the last digit (units of the third significant digit) against the correctly rounded
-value, at m = 965; 269 of the 1,000 inputs are off.
+Cost: at most 911 instructions a call, 525.3 on average over the domain, counted from its first cell to its return
+jump. Worst error: 2 in the last digit (units of the third significant digit) against the correctly rounded value,
+at m = 965; 269 of the 1,000 inputs are off.
 Address bases: cell 53 holds SUB 56. To move the routine down by d cells, subtract d from every address in its
 instructions that points into cells 12-98 and from the address bases; addresses 00 and 99 stay as they are.
 

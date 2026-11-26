@@ -7,8 +7,8 @@ characteristic; log10 200 gives 2301.
 
 Call: load x into the accumulator and JMP 15. It returns with the result in the accumulator.
 Cells 15-98 (84 cells). It writes cell 99 and, of its own cells, 67-70, 98; nothing else.
-Cost: at most 288 instructions a call, 153.5 on average over the domain, counted from the calling JMP to the
-return jump. Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 11; 145 of
+Cost: at most 287 instructions a call, 152.5 on average over the domain, counted from its first cell to its return
+jump. Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 11; 145 of
 the 999 inputs are off.
 To move the routine down by d cells, subtract d from every address in its instructions that points into
 cells 15-98; addresses 00 and 99 stay as they are. It holds no address bases.

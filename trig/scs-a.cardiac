@@ -7,11 +7,11 @@ makes sin 89, 90, 91 and cos 359, 0, 1 all 999, and sin 269, 270, 271 and cos 17
 Call: load x into the accumulator and JMP 26 for the sine or JMP 22 for the cosine. It returns with the result in
 the accumulator.
 Cells 22-98 (77 cells). It writes cell 99 and, of its own cells, 58-59, 61, 66-67, 89, 98; nothing else.
-The sine: at most 113 instructions a call, 74.5 on average. Worst error: 1 in the last digit (thousandths) against
+The sine: at most 112 instructions a call, 73.5 on average. Worst error: 1 in the last digit (thousandths) against
 the correctly rounded value, at x = 1; 88 of the 360 inputs are off.
-The cosine: at most 116 instructions a call, 77.8 on average. Worst error: 1 in the last digit (thousandths)
+The cosine: at most 115 instructions a call, 76.8 on average. Worst error: 1 in the last digit (thousandths)
 against the correctly rounded value, at x = 3; 88 of the 360 inputs are off.
-Costs count from the calling JMP to the return jump.
+Costs count from the entry to the return jump; the caller's JMP is not counted.
 Address bases: cell 65 holds ADD 69. To move the routine down by d cells, subtract d from every address in its
 instructions that points into cells 22-98 and from the address bases; addresses 00 and 99 stay as they are.
 
