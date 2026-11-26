@@ -1,0 +1,102 @@
+The routine tan-s computes the tangent of a whole number of degrees, by its partial fractions.
+
+Result: 100 tan x rounded to nearest, for x a whole number of degrees from 0 to 359, where it fits a cell: x
+mod 180 from 0 to 84 and from 96 to 179 (-951..951). Near the poles it saturates: 999 for x mod 180 from 85
+to 90, -999 from 91 to 95.
+
+Call: load x into the accumulator and JMP 13. It returns with the result in the accumulator.
+Cells 13-98 (86 cells). It writes cell 99 and, of its own cells, 77-85, 97-98; nothing else.
+Cost: at most 21113 instructions a call, 15902.7 on average over the domain, counted from its first cell to its
+return jump. Worst error: 1.362 hundredths from the exact value, at x = 54; 124 of the 360 inputs are not the
+correctly rounded value.
+Address bases: cell 89 holds ADD 85; cell 90 holds SUB 85. To move the routine down by d cells, subtract d from
+every address in its instructions that points into cells 13-98 and from the address bases; addresses 00 and 99
+stay as they are.
+
+cell  contents  notes
+ 13      678    STO 78  cells 13-31: save x and the return jump; d = x mod 180, folded to 180 - d past 90, with ADD t or SUB t chosen for the sign
+ 14      199    CLA 99
+ 15      698    STO 98
+ 16      178    CLA 78
+ 17      786    SUB 86
+ 18      320    TAC 20
+ 19      821    JMP 21
+ 20      286    ADD 86
+ 21      684    STO 84
+ 22      787    SUB 87
+ 23      700    SUB 00
+ 24      330    TAC 30
+ 25      186    CLA 86
+ 26      784    SUB 84
+ 27      684    STO 84
+ 28      190    CLA 90
+ 29      831    JMP 31
+ 30      189    CLA 89
+ 31      697    STO 97
+ 32      192    CLA 92  cells 32-55: 100 tan d = floor(5730 / (90 - d)) - floor(5730 / (90 + d)) + floor(6d / 17), three calls of MD; d >= 85 saturates
+ 33      682    STO 82
+ 34      187    CLA 87
+ 35      784    SUB 84
+ 36      683    STO 83
+ 37      792    SUB 92
+ 38      394    TAC 94
+ 39      191    CLA 91
+ 40      856    JMP 56
+ 41      685    STO 85
+ 42      187    CLA 87
+ 43      284    ADD 84
+ 44      683    STO 83
+ 45      191    CLA 91
+ 46      856    JMP 56
+ 47      185    CLA 85
+ 48      780    SUB 80
+ 49      685    STO 85
+ 50      193    CLA 93
+ 51      683    STO 83
+ 52      184    CLA 84
+ 53      856    JMP 56
+ 54      285    ADD 85
+ 55      895    JMP 95
+ 56      679    STO 79  cells 56-77: MD: floor(m a / b) for a <= b by Bresenham's loop: add a to a remainder m times and count how often it passes b; the remainder is kept less b, so one TAC tests it
+ 57      199    CLA 99
+ 58      677    STO 77
+ 59      404    SFT 04
+ 60      680    STO 80
+ 61      783    SUB 83
+ 62      681    STO 81
+ 63      179    CLA 79
+ 64      700    SUB 00
+ 65      376    TAC 76
+ 66      679    STO 79
+ 67      181    CLA 81
+ 68      282    ADD 82
+ 69      362    TAC 62
+ 70      783    SUB 83
+ 71      681    STO 81
+ 72      180    CLA 80
+ 73      200    ADD 00
+ 74      680    STO 80
+ 75      863    JMP 63
+ 76      180    CLA 80
+ 77      000    MD's return jump
+ 78      000    cells 78-93: x; MD's m, c, s, a, b; d; t; the constants 180, 90, 999, the address bases ADD t and SUB t, and 955, 6, 17
+ 79      000
+ 80      000
+ 81      000
+ 82      000
+ 83      000
+ 84      000
+ 85      000
+ 86      180
+ 87      090
+ 88      999
+ 89      285    the instruction word ADD 85, an address base
+ 90      785    the instruction word SUB 85, an address base
+ 91      955
+ 92      006
+ 93      017
+ 94      188    CLA 88  cells 94-98: saturate, or the sign: 0, then ADD t or SUB t as stored for this call; and return
+ 95      685    STO 85
+ 96      404    SFT 04
+ 97      000    built on each call: ADD t or SUB t
+ 98      000    the return jump, stored here on each call

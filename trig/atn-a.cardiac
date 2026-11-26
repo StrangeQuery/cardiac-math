@@ -1,0 +1,95 @@
+The routine atn-a computes the arctangent of a ratio, in whole degrees, by a polynomial of four terms.
+
+Input: n from -999 to 999, standing for the ratio n / 100. Result: atan(n / 100) in whole degrees, rounded,
+from -84 to 84.
+
+Call: load n into the accumulator and JMP 18. It returns with the result in the accumulator.
+Cells 18-98 (81 cells). It writes cell 99 and, of its own cells, 81-88, 98; nothing else.
+Cost: at most 10109 instructions a call, 8168.4 on average over the domain, counted from its first cell to its
+return jump. Worst error: 0.567 degrees from the exact value, at n = -102; 20 of the 1,999 inputs are not the
+correctly rounded value.
+To move the routine down by d cells, subtract d from every address in its instructions that points into
+cells 18-98; addresses 00 and 99 stay as they are. It holds no address bases.
+
+cell  contents  notes
+ 18      682    STO 82  cells 18-36: save n and the return jump; a = min(|n|, 100), b = max(|n|, 100), so z = a / b is at most 1
+ 19      199    CLA 99
+ 20      698    STO 98
+ 21      182    CLA 82
+ 22      324    TAC 24
+ 23      826    JMP 26
+ 24      782    SUB 82
+ 25      782    SUB 82
+ 26      687    STO 87
+ 27      795    SUB 95
+ 28      688    STO 88
+ 29      333    TAC 33
+ 30      195    CLA 95
+ 31      686    STO 86
+ 32      837    JMP 37
+ 33      295    ADD 95
+ 34      686    STO 86
+ 35      195    CLA 95
+ 36      687    STO 87
+ 37      189    CLA 89  cells 37-50: t = atan z in tenths of a degree by Horner's rule, one call of MD for each coefficient, then rounded to degrees
+ 38      860    JMP 60
+ 39      190    CLA 90
+ 40      784    SUB 84
+ 41      860    JMP 60
+ 42      191    CLA 91
+ 43      284    ADD 84
+ 44      860    JMP 60
+ 45      192    CLA 92
+ 46      784    SUB 84
+ 47      860    JMP 60
+ 48      293    ADD 93
+ 49      401    SFT 01
+ 50      685    STO 85
+ 51      188    CLA 88  cells 51-59: 90 - t when |n| > 100, then the sign of n
+ 52      356    TAC 56
+ 53      194    CLA 94
+ 54      785    SUB 85
+ 55      685    STO 85
+ 56      182    CLA 82
+ 57      396    TAC 96
+ 58      185    CLA 85
+ 59      898    JMP 98
+ 60      683    STO 83  cells 60-81: MD: floor(m a / b) for a <= b by Bresenham's loop: add a to a remainder m times and count how often it passes b; the remainder is kept less b, so one TAC tests it
+ 61      199    CLA 99
+ 62      681    STO 81
+ 63      404    SFT 04
+ 64      684    STO 84
+ 65      787    SUB 87
+ 66      685    STO 85
+ 67      183    CLA 83
+ 68      700    SUB 00
+ 69      380    TAC 80
+ 70      683    STO 83
+ 71      185    CLA 85
+ 72      286    ADD 86
+ 73      366    TAC 66
+ 74      787    SUB 87
+ 75      685    STO 85
+ 76      184    CLA 84
+ 77      200    ADD 00
+ 78      684    STO 84
+ 79      867    JMP 67
+ 80      184    CLA 84
+ 81      000    MD's return jump
+ 82      000    cells 82-95: n; MD's m, c, s, a, b; f = |n| - 100; the coefficients 81, 197, 8, 574; the rounding constant 5; 90; 100
+ 83      000
+ 84      000
+ 85      000
+ 86      000
+ 87      000
+ 88      000
+ 89      081
+ 90      197
+ 91      008
+ 92      574
+ 93      005
+ 94      090
+ 95      100
+ 96      404    SFT 04  cells 96-98: -t, and return
+ 97      785    SUB 85
+ 98      000    the return jump, stored here on each call

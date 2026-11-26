@@ -1,0 +1,81 @@
+The routine sin-s computes the sine of a whole number of degrees, from a table every 10 degrees.
+
+Result: 1000 sin x rounded to nearest, for x a whole number of degrees from 0 to 359, held to -999..999. A cell
+holds three digits, so STO would keep 1000 as 000; the result is capped at 999 instead, which makes sin 89, 90
+and 91 all 999 and sin 269, 270 and 271 all -999.
+
+Call: load x into the accumulator and JMP 33. It returns with the result in the accumulator.
+Cells 33-98 (66 cells). It writes cell 99 and, of its own cells, 64-65, 67, 72-73, 97-98; nothing else.
+Cost: at most 112 instructions a call, 70.8 on average over the domain, counted from its first cell to its return
+jump. Worst error: 3 in the last digit (thousandths) against the correctly rounded value, at x = 60; 196 of
+the 360 inputs are off.
+Address bases: cell 71 holds ADD 75. To move the routine down by d cells, subtract d from every address in its
+instructions that points into cells 33-98 and from the address bases; addresses 00 and 99 stay as they are.
+
+cell  contents  notes
+ 33      667    STO 67  cells 33-45: save x and the return jump; fold x to b in 0..180 with sin x = sin(b - 90): b = x + 90, 270 - x or x - 270
+ 34      199    CLA 99
+ 35      698    STO 98
+ 36      167    CLA 67
+ 37      768    SUB 68
+ 38      342    TAC 42
+ 39      769    SUB 69
+ 40      344    TAC 44
+ 41      846    JMP 46
+ 42      269    ADD 69
+ 43      846    JMP 46
+ 44      170    CLA 70
+ 45      767    SUB 67
+ 46      667    STO 67  cells 46-57: k = b div 10 (SFT 01) builds the reads ADD T+k+1, ADD T+k (less cell 00's 1) and SUB T+k (plus the table's own 500); r = b mod 10 (SFT 33)
+ 47      401    SFT 01
+ 48      271    ADD 71
+ 49      664    STO 64
+ 50      700    SUB 00
+ 51      697    STO 97
+ 52      286    ADD 86
+ 53      665    STO 65
+ 54      167    CLA 67
+ 55      433    SFT 33
+ 56      672    STO 72
+ 57      793    SUB 93
+ 58      673    STO 73  cells 58-66: add D = T[k+1] - T[k] to p, r times; p starts at r - 700, so the sum (up to 1593) stays within a cell
+ 59      172    CLA 72
+ 60      700    SUB 00
+ 61      394    TAC 94
+ 62      672    STO 72
+ 63      173    CLA 73
+ 64      000    built on each call: ADD T+k+1
+ 65      000    built on each call: SUB T+k
+ 66      858    JMP 58
+ 67      000    cells 67-73: x (then b); the constants 90, 180, 270; the address base ADD T+1; r; p
+ 68      090
+ 69      180
+ 70      270
+ 71      275    the instruction word ADD 75, an address base
+ 72      000
+ 73      000
+ 74     -999    cells 74-93: the table T[k] = 1000 sin(10k - 90), k = 0..18, entries chosen for the interpolation rather than rounded; then 700
+ 75     -988
+ 76     -943
+ 77     -869
+ 78     -769
+ 79     -645
+ 80     -502
+ 81     -342
+ 82     -175
+ 83      000
+ 84      174
+ 85      344
+ 86      500
+ 87      645
+ 88      768
+ 89      869
+ 90      943
+ 91      988
+ 92      999
+ 93      700
+ 94      173    CLA 73  cells 94-98: T[k] + (p + 700) / 10, and return
+ 95      293    ADD 93
+ 96      401    SFT 01
+ 97      000    built on each call: ADD T+k
+ 98      000    the return jump, stored here on each call

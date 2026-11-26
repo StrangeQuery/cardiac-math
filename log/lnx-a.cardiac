@@ -1,0 +1,102 @@
+The routine lnx-a computes the natural logarithm of a whole number from 1 to 999, by pseudo-division, four-digit
+remainder.
+
+Input: x from 1 to 999. Result: 1000 ln x rounded, from 0 to 6908, in the accumulator (it does not fit a cell: STO
+keeps the last three digits and SFT 03 leaves the thousands).
+
+Call: load x into the accumulator and JMP 12. It returns with the result in the accumulator.
+Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 65-68, 98; nothing else.
+Cost: at most 283 instructions a call, 133.9 on average over the domain, counted from its first cell to its return
+jump. Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 4; 110 of the 999
+inputs are off.
+To move the routine down by d cells, subtract d from every address in its instructions that points into
+cells 12-98; addresses 00 and 99 stay as they are. It holds no address bases.
+
+cell  contents  notes
+ 12      667    STO 67  cells 12-19: save x in y, its working cell, and the return jump; G = F = 0, the sum of logarithms in two cells
+ 13      199    CLA 99
+ 14      698    STO 98
+ 15      404    SFT 04
+ 16      665    STO 65
+ 17      666    STO 66
+ 18      668    STO 68
+ 19      167    CLA 67
+ 20      667    STO 67  cells 20-25: double y while it is below 500 (exact); then r = 1000 - y
+ 21      755    SUB 55
+ 22      346    TAC 46
+ 23      667    STO 67
+ 24      155    CLA 55
+ 25      767    SUB 67
+ 26      667    STO 67  cells 26-45: multiply y by 1.1 while it stays at most 1000, on the four-digit remainder R = 10 r + e: R' = R + R / 10 - 1000, e the tenths; each step adds log 1.1 to G and F
+ 27      167    CLA 67
+ 28      756    SUB 56
+ 29      410    SFT 10
+ 30      267    ADD 67
+ 31      268    ADD 68
+ 32      369    TAC 69
+ 33      668    STO 68
+ 34      401    SFT 01
+ 35      667    STO 67
+ 36      168    CLA 68
+ 37      433    SFT 33
+ 38      668    STO 68
+ 39      165    CLA 65
+ 40      258    ADD 58
+ 41      665    STO 65
+ 42      166    CLA 66
+ 43      259    ADD 59
+ 44      666    STO 66
+ 45      827    JMP 27
+ 46      165    CLA 65  cells 46-54: a doubling adds log 2 to G and F
+ 47      260    ADD 60
+ 48      665    STO 65
+ 49      166    CLA 66
+ 50      261    ADD 61
+ 51      666    STO 66
+ 52      167    CLA 67
+ 53      267    ADD 67
+ 54      820    JMP 20
+ 55      500    cells 55-68: the constants 500, 100 and 200; the logarithms of the factors in hundredths and ten-thousandths (1.1: 9, 54; 2: 69, 31; 1.02: 2, and -1 from cell 00); the offset 25; 691 = 100 ln 1000; G; F; y; e
+ 56      100
+ 57      200
+ 58      009
+ 59      054
+ 60      069
+ 61      031
+ 62      002
+ 63      025
+ 64      691
+ 65      000
+ 66      000
+ 67      000
+ 68      000
+ 69      167    CLA 67  cells 69-86: R = 10 r; multiply by 1.02 while it stays at most 1000: R' = R + 2R / 100 - 200, each step adding ln 1.02 to G and F
+ 70      410    SFT 10
+ 71      268    ADD 68
+ 72      667    STO 67
+ 73      267    ADD 67
+ 74      402    SFT 02
+ 75      267    ADD 67
+ 76      757    SUB 57
+ 77      387    TAC 87
+ 78      667    STO 67
+ 79      165    CLA 65
+ 80      262    ADD 62
+ 81      665    STO 65
+ 82      166    CLA 66
+ 83      700    SUB 00
+ 84      666    STO 66
+ 85      167    CLA 67
+ 86      872    JMP 72
+ 87      167    CLA 67  cells 87-98: the tail R + R / 100 and the offset into F; the result 10 (691 - G) - F / 10, and return
+ 88      402    SFT 02
+ 89      267    ADD 67
+ 90      266    ADD 66
+ 91      263    ADD 63
+ 92      401    SFT 01
+ 93      666    STO 66
+ 94      164    CLA 64
+ 95      765    SUB 65
+ 96      410    SFT 10
+ 97      766    SUB 66
+ 98      000    the return jump, stored here on each call
