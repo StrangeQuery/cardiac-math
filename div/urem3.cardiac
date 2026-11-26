@@ -1,0 +1,25 @@
+urem3: x % 3, for x from 0 to 999. Inline: no call.
+Listed at cells 10-24, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-24 to where the program needs x % 3, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 3 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 16 cells (15 instructions and t0). It runs 15 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-20: s = x + 1; v = 333s modulo 1000 (each STO keeps three digits); right for x >= 0 only
+ 11     200      ADD 00
+ 12     691      STO 91
+ 13     410      SFT 10
+ 14     291      ADD 91
+ 15     410      SFT 10
+ 16     291      ADD 91
+ 17     691      STO 91
+ 18     291      ADD 91
+ 19     291      ADD 91
+ 20     691      STO 91
+ 21     191      CLA 91   cells 21-24: 3v / 1000
+ 22     291      ADD 91
+ 23     291      ADD 91
+ 24     403      SFT 03
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

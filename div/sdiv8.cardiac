@@ -1,0 +1,20 @@
+sdiv8: x / 8, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-20, with x in cell 90.
+Copy cells 10-20 to where the program needs x / 8, with each 90 changed to the program's cell for x; the program goes on with x / 8 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 11 cells. It runs 11 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-20: 125x / 1000 by Horner's rule (digits 5, 2, 1)
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     290      ADD 90
+ 14     290      ADD 90
+ 15     401      SFT 01
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     401      SFT 01
+ 19     290      ADD 90
+ 20     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept

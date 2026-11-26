@@ -1,0 +1,19 @@
+srem2: x % 2, for x from -999 to 999, with the sign of x. Inline: no call.
+Listed at cells 10-18, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-18 to where the program needs x % 2, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 2 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 10 cells (9 instructions and t0). It runs 9 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-15: 5x; its last digit (5 when x is odd, 0 when even) kept, times 100, by SFT 31
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     290      ADD 90
+ 14     290      ADD 90
+ 15     431      SFT 31
+ 16     691      STO 91   cells 16-18: doubled and divided by 1000
+ 17     291      ADD 91
+ 18     403      SFT 03
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

@@ -1,0 +1,29 @@
+srem3: x % 3, for x from -999 to 999, with the sign of x. Inline: no call.
+Listed at cells 10-28, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-28 to where the program needs x % 3, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 3 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 20 cells (19 instructions and t0). It runs 19 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-22: 3334x modulo 10^4, as 10 times 333x (kept modulo 1000 in t0) plus 4x; it lies in one of three bands, one per remainder
+ 11     410      SFT 10
+ 12     290      ADD 90
+ 13     410      SFT 10
+ 14     290      ADD 90
+ 15     691      STO 91
+ 16     291      ADD 91
+ 17     291      ADD 91
+ 18     410      SFT 10
+ 19     290      ADD 90
+ 20     290      ADD 90
+ 21     290      ADD 90
+ 22     290      ADD 90
+ 23     401      SFT 01   cells 23-28: the band read: shifted right one place, times 4, and divided by 1000
+ 24     691      STO 91
+ 25     291      ADD 91
+ 26     291      ADD 91
+ 27     291      ADD 91
+ 28     403      SFT 03
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

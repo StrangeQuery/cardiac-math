@@ -1,0 +1,27 @@
+sdiv12: x / 12, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-27, with x in cell 90.
+Copy cells 10-27 to where the program needs x / 12, with each 90 changed to the program's cell for x; the program goes on with x / 12 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 18 cells. It runs 18 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-27: 834x / 10^4 by Horner's rule (digits 4, 3, then 8 with a shift of two)
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     290      ADD 90
+ 14     401      SFT 01
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     401      SFT 01
+ 19     290      ADD 90
+ 20     290      ADD 90
+ 21     290      ADD 90
+ 22     290      ADD 90
+ 23     290      ADD 90
+ 24     290      ADD 90
+ 25     290      ADD 90
+ 26     290      ADD 90
+ 27     402      SFT 02
+ 90     000      data: x, the program's cell, which is kept

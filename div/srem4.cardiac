@@ -1,0 +1,24 @@
+srem4: x % 4, for x from -999 to 999, with the sign of x. Inline: no call.
+Listed at cells 10-23, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-23 to where the program needs x % 4, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 4 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 15 cells (14 instructions and t0). It runs 14 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-18: 25x; its last two digits, 25 times the remainder, kept by SFT 22
+ 11     290      ADD 90
+ 12     410      SFT 10
+ 13     290      ADD 90
+ 14     290      ADD 90
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     422      SFT 22
+ 19     691      STO 91   cells 19-23: times 4, divided by 100
+ 20     291      ADD 91
+ 21     291      ADD 91
+ 22     291      ADD 91
+ 23     402      SFT 02
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

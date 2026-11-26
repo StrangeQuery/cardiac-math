@@ -1,0 +1,31 @@
+urem12: x % 12, for x from 0 to 999. Inline: no call.
+Listed at cells 10-30, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-30 to where the program needs x % 12, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 12 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 22 cells (21 instructions and t0). It runs 21 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-23: q = x / 12, as udiv12; right for x >= 0 only
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     401      SFT 01
+ 14     290      ADD 90
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     401      SFT 01
+ 18     790      SUB 90
+ 19     790      SUB 90
+ 20     700      SUB 00
+ 21     401      SFT 01
+ 22     290      ADD 90
+ 23     401      SFT 01
+ 24     691      STO 91   cells 24-30: x - 12q, as -12q + x
+ 25     791      SUB 91
+ 26     791      SUB 91
+ 27     410      SFT 10
+ 28     791      SUB 91
+ 29     791      SUB 91
+ 30     290      ADD 90
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

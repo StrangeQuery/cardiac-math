@@ -1,0 +1,26 @@
+sdiv6: x / 6, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-26, with x in cell 90.
+Copy cells 10-26 to where the program needs x / 6, with each 90 changed to the program's cell for x; the program goes on with x / 6 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 17 cells. It runs 17 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-23: -333x / 1000 by Horner's rule (digits -3, -3, -3)
+ 11     790      SUB 90
+ 12     790      SUB 90
+ 13     790      SUB 90
+ 14     790      SUB 90
+ 15     401      SFT 01
+ 16     790      SUB 90
+ 17     790      SUB 90
+ 18     790      SUB 90
+ 19     401      SFT 01
+ 20     790      SUB 90
+ 21     790      SUB 90
+ 22     790      SUB 90
+ 23     401      SFT 01
+ 24     290      ADD 90   cells 24-26: plus 2x and a last shift: 1667x / 10^4, the truncations cancelling
+ 25     290      ADD 90
+ 26     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept

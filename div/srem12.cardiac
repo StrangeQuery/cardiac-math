@@ -1,0 +1,35 @@
+srem12: x % 12, for x from -999 to 999, with the sign of x. Inline: no call.
+Listed at cells 10-34, with x in cell 90 and a scratch cell t0 in cell 91.
+Copy cells 10-34 to where the program needs x % 12, with each 90 changed to the program's cell for x and each 91 to a free cell; the program goes on with x % 12 in the accumulator.
+It overwrites the accumulator and t0; x is kept.
+Size 26 cells (25 instructions and t0). It runs 25 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-27: q = x / 12, as sdiv12
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     290      ADD 90
+ 14     401      SFT 01
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     401      SFT 01
+ 19     290      ADD 90
+ 20     290      ADD 90
+ 21     290      ADD 90
+ 22     290      ADD 90
+ 23     290      ADD 90
+ 24     290      ADD 90
+ 25     290      ADD 90
+ 26     290      ADD 90
+ 27     402      SFT 02
+ 28     691      STO 91   cells 28-34: x - 12q, as -12q + x
+ 29     791      SUB 91
+ 30     791      SUB 91
+ 31     410      SFT 10
+ 32     791      SUB 91
+ 33     791      SUB 91
+ 34     290      ADD 90
+ 90     000      data: x, the program's cell, which is kept
+ 91     000      data: t0, scratch

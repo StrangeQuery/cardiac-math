@@ -1,0 +1,19 @@
+srem9: x % 9, for x from -999 to 999, with the sign of x. Inline: no call.
+Listed at cells 10-19, with x in cell 90.
+Copy cells 10-19 to where the program needs x % 9, with each 90 changed to the program's cell for x; the program goes on with x % 9 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 10 cells. It runs 10 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-18: 1111x modulo 10^4, whose thousands digit is the remainder; ADD x, SUB x mends remainder 0 through the accumulator's wrap
+ 11     410      SFT 10
+ 12     290      ADD 90
+ 13     410      SFT 10
+ 14     290      ADD 90
+ 15     410      SFT 10
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     790      SUB 90
+ 19     403      SFT 03   cell 19: the thousands digit
+ 90     000      data: x, the program's cell, which is kept
