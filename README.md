@@ -89,12 +89,12 @@ bound is claimed for the called form.
 | [umul-f](mul/#umul-f) | x * y | x, y >= 0 and x * y <= 999 | 39 (60-98) | 84 / 44.0 | y | multiplication by digit, computed jump | no; fastest measured |
 | [usqr-s](mul/#usqr-s) | x * x | x from 0 to 31 | 17 (82-98) | 289 / 149.5 | - | sum of odd numbers | no; inline 8 to 11 (none of 7 without SFT) |
 | [usqr-f](mul/#usqr-f) | x * x | x from 0 to 31 | 43 (56-98) | 9 / 9.0 | - | table of squares | no; fastest measured |
-| [udvm-s](udvm-s/) | x / y and x % y | x from 0 to 999, y from 1 to 999 | 17 (82-98) | 8,002 / 36.3 | - | repeated subtraction | no; inline 8 to 10 (none of 7) |
-| [udvm-f](udvm-f/) | x / y and x % y | x from 0 to 999, y from 1 to 999 | 38 (61-98) | 275 / 30.3 | - | decimal long division, Horner's rule | no; fastest measured |
-| [urem-s](urem-s/) | x % y | x from 0 to 999, y from 1 to 999 | 11 (88-98) | 3,005 / 17.9 | - | repeated subtraction | yes, inline 5 cells, none of 4 |
-| [sdvm-s](sdvm-s/) | x / y and x % y, signed | x and y from -999 to 999, y not 0 | 47 (52-98) | 8,021 / 49.8 | y | repeated subtraction on magnitudes | no; inline 8 to 40 (none of 7) |
-| [sdvm-f](sdvm-f/) | x / y and x % y, signed | x and y from -999 to 999, y not 0 | 71 (28-98) | 304 / 50.3 | y | decimal long division on magnitudes | no; fastest measured |
-| [srem-s](srem-s/) | x % y, signed | x and y from -999 to 999, y not 0 | 24 (75-98) | 3,013 / 22.7 | y | repeated subtraction or addition | no; inline 8 to 18 (none of 7) |
+| [udvm-s](div/#udvm-s) | x / y and x % y | x from 0 to 999, y from 1 to 999 | 17 (82-98) | 8,002 / 36.3 | - | repeated subtraction | no; inline 8 to 10 (none of 7) |
+| [udvm-f](div/#udvm-f) | x / y and x % y | x from 0 to 999, y from 1 to 999 | 38 (61-98) | 275 / 30.3 | - | decimal long division, Horner's rule | no; fastest measured |
+| [urem-s](div/#urem-s) | x % y | x from 0 to 999, y from 1 to 999 | 11 (88-98) | 3,005 / 17.9 | - | repeated subtraction | yes, inline 5 cells, none of 4 |
+| [sdvm-s](div/#sdvm-s) | x / y and x % y, signed | x and y from -999 to 999, y not 0 | 47 (52-98) | 8,021 / 49.8 | y | repeated subtraction on magnitudes | no; inline 8 to 40 (none of 7) |
+| [sdvm-f](div/#sdvm-f) | x / y and x % y, signed | x and y from -999 to 999, y not 0 | 71 (28-98) | 304 / 50.3 | y | decimal long division on magnitudes | no; fastest measured |
+| [srem-s](div/#srem-s) | x % y, signed | x and y from -999 to 999, y not 0 | 24 (75-98) | 3,013 / 22.7 | y | repeated subtraction or addition | no; inline 8 to 18 (none of 7) |
 | [uisq-s](sqrt/#uisq-s) | floor(sqrt(x)) | x from 0 to 999 | 18 (81-98) | 322 / 217.8 | - | sum of odd numbers | no; inline 8 to 13 (none of 7) |
 | [uisq-f](sqrt/#uisq-f) | floor(sqrt(x)) | x from 0 to 999 | 49 (50-98) | 100 / 32.4 | - | table start, sum of odd numbers | no; fastest measured |
 | [uisr-s](sqrt/#uisr-s) | sqrt(x) to the nearest integer | x from 0 to 999 | 20 (79-98) | 302 / 203.5 | - | sum of even numbers | no; inline 7 to 15 (none of 6) |
