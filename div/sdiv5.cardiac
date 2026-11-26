@@ -1,0 +1,12 @@
+sdiv5: x / 5, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-12, with x in cell 90.
+Copy cells 10-12 to where the program needs x / 5, with each 90 changed to the program's cell for x; the program goes on with x / 5 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 3 cells. It runs 3 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-12: 2x / 10
+ 11     290      ADD 90
+ 12     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept

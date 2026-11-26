@@ -1,0 +1,42 @@
+udvm-m: x / y and x % y, for x from 0 to 999 and y from 1 to 999.
+Cells 65-98. To call it, put y in cell 88, load x into the accumulator and JMP 65.
+It returns the quotient x / y in the accumulator and the remainder x % y in cell 87.
+It overwrites its own cells and cell 99; y in cell 88 is kept.
+Size 34 cells. It runs at most 1,178 instructions, 28.6 on average, counted from cell 65 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 65     687      STO 87   cells 65-67: the call: store x, and copy the return jump from cell 99 into cell 98
+ 66     199      CLA 99
+ 67     698      STO 98
+ 68     188      CLA 88   cells 68-72: t = 10y (wrong when y >= 100, and then never used), q = 0 (10y - t is 0 or a multiple of 1,000)
+ 69     410      SFT 10
+ 70     684      STO 84
+ 71     784      SUB 84
+ 72     686      STO 86
+ 73     187      CLA 87   cells 73-83: tens: while x / 10 >= y, take 10y from x and add 10 to q
+ 74     401      SFT 01
+ 75     788      SUB 88
+ 76     389      TAC 89
+ 77     187      CLA 87
+ 78     784      SUB 84
+ 79     687      STO 87
+ 80     186      CLA 86
+ 81     285      ADD 85
+ 82     686      STO 86
+ 83     873      JMP 73
+ 84     000      data: t, 10y
+ 85     010      data: the constant 10
+ 86     000      data: the quotient q
+ 87     000      data: x, and then the remainder
+ 88     000      data: y, which is kept
+ 89     187      CLA 87   cells 89-96: units: take y from x while that leaves 0 or more, adding 1 to q
+ 90     788      SUB 88
+ 91     397      TAC 97
+ 92     687      STO 87
+ 93     186      CLA 86
+ 94     200      ADD 00
+ 95     686      STO 86
+ 96     889      JMP 89
+ 97     186      CLA 86   cell 97: the quotient into the accumulator
+ 98     000               set on every call: the jump back to the caller

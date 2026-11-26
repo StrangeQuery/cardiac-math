@@ -1,0 +1,26 @@
+sdiv3: x / 3, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-26, with x in cell 90.
+Copy cells 10-26 to where the program needs x / 3, with each 90 changed to the program's cell for x; the program goes on with x / 3 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 17 cells. It runs 17 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-26: 3334x / 10^4 by Horner's rule, a decimal digit of 3334 a level, the last digit first
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     290      ADD 90
+ 14     401      SFT 01
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     290      ADD 90
+ 18     401      SFT 01
+ 19     290      ADD 90
+ 20     290      ADD 90
+ 21     290      ADD 90
+ 22     401      SFT 01
+ 23     290      ADD 90
+ 24     290      ADD 90
+ 25     290      ADD 90
+ 26     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept

@@ -1,0 +1,23 @@
+udiv12: x / 12, for x from 0 to 999. Inline: no call.
+Listed at cells 10-23, with x in cell 90.
+Copy cells 10-23 to where the program needs x / 12, with each 90 changed to the program's cell for x; the program goes on with x / 12 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 14 cells. It runs 14 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-23: (833x - 100) / 10^4 by signed digits (3, 3, -2, 1), the -1 from cell 00; right for x >= 0 only
+ 11     290      ADD 90
+ 12     290      ADD 90
+ 13     401      SFT 01
+ 14     290      ADD 90
+ 15     290      ADD 90
+ 16     290      ADD 90
+ 17     401      SFT 01
+ 18     790      SUB 90
+ 19     790      SUB 90
+ 20     700      SUB 00
+ 21     401      SFT 01
+ 22     290      ADD 90
+ 23     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept

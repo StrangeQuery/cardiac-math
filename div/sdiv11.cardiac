@@ -1,0 +1,17 @@
+sdiv11: x / 11, for x from -999 to 999, truncated toward zero. Inline: no call.
+Listed at cells 10-17, with x in cell 90.
+Copy cells 10-17 to where the program needs x / 11, with each 90 changed to the program's cell for x; the program goes on with x / 11 in the accumulator.
+It overwrites the accumulator; x is kept.
+Size 8 cells. It runs 8 instructions, straight through.
+Exact over the domain.
+
+cell  contents   notes
+ 10     190      CLA 90   cells 10-17: 909x / 10^4 by signed digits: 9x / 100, then -x, then +x, a shift after each
+ 11     410      SFT 10
+ 12     790      SUB 90
+ 13     402      SFT 02
+ 14     790      SUB 90
+ 15     401      SFT 01
+ 16     290      ADD 90
+ 17     401      SFT 01
+ 90     000      data: x, the program's cell, which is kept
