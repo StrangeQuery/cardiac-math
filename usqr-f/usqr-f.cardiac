@@ -1,0 +1,51 @@
+usqr-f: x * x, for x from 0 to 31.
+Cells 56-98. To call it, load x into the accumulator and JMP 56.
+It returns x * x in the accumulator.
+It overwrites its own cells and cell 99.
+Size 43 cells. It runs at most 9 instructions, 9.0 on average, counted from cell 56 to the return jump in cell 98.
+Exact over the domain; outside it, x reads past the table.
+
+cell  contents   notes
+ 56     663      STO 63   cells 56-58: the call: store x, and copy the return jump from cell 99 into cell 98
+ 57     199      CLA 99
+ 58     698      STO 98
+ 59     163      CLA 63   cells 59-62: build CLA 65 + x in cell 97 and jump to it
+ 60     264      ADD 64
+ 61     697      STO 97
+ 62     897      JMP 97
+ 63     000      data: x
+ 64     165      data: CLA of the table's first cell, an instruction the routine copies and changes
+ 65     000      data: the table of squares, 0 to 961
+ 66     001
+ 67     004
+ 68     009
+ 69     016
+ 70     025
+ 71     036
+ 72     049
+ 73     064
+ 74     081
+ 75     100
+ 76     121
+ 77     144
+ 78     169
+ 79     196
+ 80     225
+ 81     256
+ 82     289
+ 83     324
+ 84     361
+ 85     400
+ 86     441
+ 87     484
+ 88     529
+ 89     576
+ 90     625
+ 91     676
+ 92     729
+ 93     784
+ 94     841
+ 95     900
+ 96     961
+ 97     000               set by the routine before it runs: CLA of x * x in the table
+ 98     000               set on every call: the jump back to the caller

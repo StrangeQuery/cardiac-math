@@ -1,0 +1,64 @@
+uisr-f: sqrt(x) to the nearest integer, for x from 0 to 999.
+Cells 43-98. To call it, load x into the accumulator and JMP 43.
+It returns the nearest integer to sqrt(x) in the accumulator.
+It overwrites its own cells and cell 99.
+Size 56 cells. It runs at most 105 instructions, 37.4 on average, counted from cell 43 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 43     661      STO 61   cells 43-45: the call: store x, and copy the return jump from cell 99 into cell 98
+ 44     199      CLA 99
+ 45     698      STO 98
+ 46     161      CLA 61   cells 46-51: a = x / 100; build CLA 62 + a in cell 52 and CLA 72 + a in cell 54
+ 47     402      SFT 02
+ 48     258      ADD 58
+ 49     652      STO 52
+ 50     259      ADD 59
+ 51     654      STO 54
+ 52     000               cells 52-57: r = r0, and n = r0 squared - x; set by the routine before it runs: CLA of r0 in the table
+ 53     660      STO 60
+ 54     000               set by the routine before it runs: CLA of r0 squared in the table
+ 55     761      SUB 61
+ 56     661      STO 61
+ 57     888      JMP 88
+ 58     162      data: CLA of the first root, an instruction the routine copies and changes
+ 59     010      data: 10, from one table to the other
+ 60     000      data: the root r
+ 61     000      data: x, and then n
+ 62     000      data: floor(sqrt(100a)) for a from 0 to 9
+ 63     010
+ 64     014
+ 65     017
+ 66     020
+ 67     022
+ 68     024
+ 69     026
+ 70     028
+ 71     030
+ 72     000      data: their squares
+ 73     100
+ 74     196
+ 75     289
+ 76     400
+ 77     484
+ 78     576
+ 79     676
+ 80     784
+ 81     900
+ 82     200      ADD 00   cells 82-90: take 2r + 1 while n + 2r < 0
+ 83     661      STO 61
+ 84     160      CLA 60
+ 85     200      ADD 00
+ 86     660      STO 60
+ 87     161      CLA 61
+ 88     260      ADD 60
+ 89     260      ADD 60
+ 90     382      TAC 82
+ 91     161      CLA 61   cells 91-97: r + 1 when x - r^2 > r, else r
+ 92     260      ADD 60
+ 93     396      TAC 96
+ 94     160      CLA 60
+ 95     898      JMP 98
+ 96     160      CLA 60
+ 97     200      ADD 00
+ 98     000               set on every call: the jump back to the caller

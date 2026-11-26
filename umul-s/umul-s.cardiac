@@ -1,0 +1,25 @@
+umul-s: x * y, for x and y from 0 to 999 with x * y <= 999; x may also be negative.
+Cells 82-98. To call it, put y in cell 96, load x into the accumulator and JMP 82.
+It returns x * y in the accumulator.
+It overwrites its own cells and cell 99, including y in cell 96 (counted down to 0).
+Size 17 cells. It runs at most 8,002 instructions, 1,011.4 on average, counted from cell 82 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 82     695      STO 95   cells 82-84: the call: store x, and copy the return jump from cell 99 into cell 98
+ 83     199      CLA 99
+ 84     698      STO 98
+ 85     404      SFT 04   cells 85-93: p = 0 by SFT 04; then add x to p and take 1 from y until y is used up
+ 86     694      STO 94
+ 87     196      CLA 96
+ 88     700      SUB 00
+ 89     397      TAC 97
+ 90     696      STO 96
+ 91     194      CLA 94
+ 92     295      ADD 95
+ 93     886      JMP 86
+ 94     000      data: the product p
+ 95     000      data: x
+ 96     000      data: y, counted down to 0
+ 97     194      CLA 94   cell 97: the product into the accumulator
+ 98     000               set on every call: the jump back to the caller

@@ -1,0 +1,26 @@
+uisq-s: floor(sqrt(x)), for x from 0 to 999.
+Cells 81-98. To call it, load x into the accumulator and JMP 81.
+It returns floor(sqrt(x)) in the accumulator.
+It overwrites its own cells and cell 99.
+Size 18 cells. It runs at most 322 instructions, 217.8 on average, counted from cell 81 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 81     696      STO 96   cells 81-83: the call: store x, and copy the return jump from cell 99 into cell 98
+ 82     199      CLA 99
+ 83     698      STO 98
+ 84     404      SFT 04   cells 84-94: r = 0 by SFT 04; then take 2r + 1 from x while that leaves 0 or more, counting r
+ 85     695      STO 95
+ 86     196      CLA 96
+ 87     795      SUB 95
+ 88     795      SUB 95
+ 89     700      SUB 00
+ 90     397      TAC 97
+ 91     696      STO 96
+ 92     195      CLA 95
+ 93     200      ADD 00
+ 94     885      JMP 85
+ 95     000      data: the root r
+ 96     000      data: x, and then what is left
+ 97     195      CLA 95   cell 97: the root into the accumulator
+ 98     000               set on every call: the jump back to the caller

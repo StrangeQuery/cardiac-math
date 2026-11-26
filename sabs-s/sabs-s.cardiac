@@ -1,0 +1,18 @@
+sabs-s: |x|, for x from -999 to 999.
+Cells 89-98. To call it, load x into the accumulator and JMP 89.
+It returns |x| in the accumulator.
+It overwrites its own cells and cell 99.
+Size 10 cells. It runs at most 8 instructions, 7.5 on average, counted from cell 89 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 89     695      STO 95   cells 89-91: the call: store x, and copy the return jump from cell 99 into cell 98
+ 90     199      CLA 99
+ 91     698      STO 98
+ 92     195      CLA 95   cells 92-94: x >= 0: back with x as it is
+ 93     396      TAC 96
+ 94     898      JMP 98
+ 95     000      data: x
+ 96     795      SUB 95   cells 96-97: x < 0: x - x - x = -x
+ 97     795      SUB 95
+ 98     000               set on every call: the jump back to the caller

@@ -1,0 +1,47 @@
+umul-f: x * y, for x and y from 0 to 999 with x * y <= 999.
+Cells 60-98. To call it, put y in cell 96, load x into the accumulator and JMP 60.
+It returns x * y in the accumulator.
+It overwrites its own cells and cell 99, including y in cell 96 (divided down to 0).
+Size 39 cells. It runs at most 84 instructions, 44.0 on average, counted from cell 60 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 60     695      STO 95   cells 60-62: the call: store x, and copy the return jump from cell 99 into cell 98
+ 61     199      CLA 99
+ 62     698      STO 98
+ 63     404      SFT 04   cells 63-64: p = 0
+ 64     694      STO 94
+ 65     196      CLA 96   cells 65-70: d = y's last digit; build JMP 82 less d in cell 72
+ 66     433      SFT 33
+ 67     693      STO 93
+ 68     192      CLA 92
+ 69     793      SUB 93
+ 70     672      STO 72
+ 71     194      CLA 94   cells 71-82: jump into the row of nine ADD x, d cells from its end: p + d * x
+ 72     000               set by the routine before it runs: JMP to one of the ADD x below
+ 73     295      ADD 95
+ 74     295      ADD 95
+ 75     295      ADD 95
+ 76     295      ADD 95
+ 77     295      ADD 95
+ 78     295      ADD 95
+ 79     295      ADD 95
+ 80     295      ADD 95
+ 81     295      ADD 95
+ 82     694      STO 94
+ 83     196      CLA 96   cells 83-91: y = y / 10, done when it is 0; otherwise x = 10x (it always fits when it is used) and again
+ 84     401      SFT 01
+ 85     696      STO 96
+ 86     700      SUB 00
+ 87     397      TAC 97
+ 88     195      CLA 95
+ 89     410      SFT 10
+ 90     695      STO 95
+ 91     865      JMP 65
+ 92     882      data: JMP 82, an instruction the routine copies and changes
+ 93     000      data: the digit d
+ 94     000      data: the product p
+ 95     000      data: x, multiplied by ten for each digit of y
+ 96     000      data: y, divided by ten for each digit
+ 97     194      CLA 94   cell 97: the product into the accumulator
+ 98     000               set on every call: the jump back to the caller

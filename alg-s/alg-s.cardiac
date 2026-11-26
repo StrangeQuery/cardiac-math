@@ -1,0 +1,103 @@
+The routine alg-s computes the antilogarithm of a three-digit mantissa, by pseudo-multiplication, the exponent
+rescaled each level.
+
+Input: a mantissa m from 0 to 999. Result: 100 times 10 to the power m / 1000, rounded, from 100 to 998: the three
+significant digits of the antilogarithm, whose characteristic places the decimal point. A logarithm L = 1000c + m
+gives the number s times 10 to the power c - 2.
+
+Call: load m into the accumulator and JMP 12. It returns with the result in the accumulator.
+Cells 12-98 (87 cells). It writes cell 99 and, of its own cells, 33, 41, 52, 61-66, 98; nothing else.
+Cost: at most 912 instructions a call, 526.3 on average over the domain, counted from the calling JMP to the
+return jump. Worst error: 2 in the last digit (units of the third significant digit) against the correctly rounded
+value, at m = 965; 269 of the 1,000 inputs are off.
+Address bases: cell 53 holds SUB 56. To move the routine down by d cells, subtract d from every address in its
+instructions that points into cells 12-98 and from the address bases; addresses 00 and 99 stay as they are.
+
+cell  contents  notes
+ 12      652    STO 52  cells 12-17: save x and the return jump; the first pass starts from P = 1000 (t = 0) and is marked by f = 0
+ 13      199    CLA 99
+ 14      698    STO 98
+ 15      404    SFT 04
+ 16      661    STO 61
+ 17      662    STO 62
+ 18      153    CLA 53  cells 18-29: each pass: the loop's two words back to the first level; P = 1000 + t in h and w; M = x in hm and wm
+ 19      633    STO 33
+ 20      154    CLA 54
+ 21      641    STO 41
+ 22      100    CLA 00
+ 23      663    STO 63
+ 24      161    CLA 61
+ 25      664    STO 64
+ 26      152    CLA 52
+ 27      666    STO 66
+ 28      404    SFT 04
+ 29      665    STO 65
+ 30      165    CLA 65  cells 30-51: while M >= c, the level's constant: M = M - c and P = P + P / 10^k
+ 31      430    SFT 30
+ 32      266    ADD 66
+ 33      756    SUB 56
+ 34      367    TAC 67
+ 35      666    STO 66
+ 36      403    SFT 03
+ 37      665    STO 65
+ 38      163    CLA 63
+ 39      430    SFT 30
+ 40      264    ADD 64
+ 41      400    SFT 00
+ 42      661    STO 61
+ 43      403    SFT 03
+ 44      263    ADD 63
+ 45      430    SFT 30
+ 46      264    ADD 64
+ 47      261    ADD 61
+ 48      664    STO 64
+ 49      403    SFT 03
+ 50      663    STO 63
+ 51      830    JMP 30
+ 52      000    cells 52-66: x; the first level's words SUB B0 (an address base) and SFT 00, and SFT 03 for the end; the constants 301, 413, 432 (log 2, log 1.1, log 1.01 in thousandths, ten-thousandths, hundred-thousandths); -1; 9; t; f; P in h and w; M in hm and wm
+ 53      756    the instruction word SUB 56, an address base
+ 54      400    the instruction word SFT 00
+ 55      403    the instruction word SFT 03
+ 56      301
+ 57      413
+ 58      432
+ 59     -001
+ 60      009
+ 61      000
+ 62      000
+ 63      000
+ 64      000
+ 65      000
+ 66      000
+ 67      141    CLA 41  cells 67-84: the next level: the two words advanced by cell 00's 1; after the last, the second pass from P = 1000 + 2E / 100, E what is left of M
+ 68      200    ADD 00
+ 69      641    STO 41
+ 70      133    CLA 33
+ 71      200    ADD 00
+ 72      633    STO 33
+ 73      141    CLA 41
+ 74      755    SUB 55
+ 75      385    TAC 85
+ 76      162    CLA 62
+ 77      393    TAC 93
+ 78      166    CLA 66
+ 79      266    ADD 66
+ 80      402    SFT 02
+ 81      661    STO 61
+ 82      159    CLA 59
+ 83      662    STO 62
+ 84      818    JMP 18
+ 85      165    CLA 65  cells 85-92: M = 10 M, in the next level's units
+ 86      430    SFT 30
+ 87      266    ADD 66
+ 88      410    SFT 10
+ 89      666    STO 66
+ 90      403    SFT 03
+ 91      665    STO 65
+ 92      830    JMP 30
+ 93      163    CLA 63  cells 93-98: the result (P + 9) / 10, and return
+ 94      430    SFT 30
+ 95      264    ADD 64
+ 96      260    ADD 60
+ 97      401    SFT 01
+ 98      000    the return jump, stored here on each call

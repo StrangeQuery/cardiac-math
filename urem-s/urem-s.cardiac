@@ -1,0 +1,19 @@
+urem-s: x % y, for x from 0 to 999 and y from 1 to 999.
+Cells 88-98. To call it, put y in cell 96, load x into the accumulator and JMP 88.
+It returns x % y in the accumulator.
+It overwrites its own cells and cell 99; y in cell 96 is kept.
+Size 11 cells. It runs at most 3,005 instructions, 17.9 on average, counted from cell 88 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 88     695      STO 95   cells 88-90: the call: store x, and copy the return jump from cell 99 into cell 98
+ 89     199      CLA 99
+ 90     698      STO 98
+ 91     195      CLA 95   cells 91-94: take y away until the accumulator goes below 0
+ 92     796      SUB 96
+ 93     397      TAC 97
+ 94     892      JMP 92
+ 95     000      data: x
+ 96     000      data: y, which is kept
+ 97     296      ADD 96   cell 97: that went one y too far: add it back
+ 98     000               set on every call: the jump back to the caller

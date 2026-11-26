@@ -1,0 +1,16 @@
+sneg-s: -x, for x from -999 to 999.
+Cells 91-98. To call it, load x into the accumulator and JMP 91.
+It returns -x in the accumulator.
+It overwrites its own cells and cell 99.
+Size 8 cells. It runs at most 7 instructions, 7.0 on average, counted from cell 91 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 91     697      STO 97   cells 91-93: the call: store x, and copy the return jump from cell 99 into cell 98
+ 92     199      CLA 99
+ 93     698      STO 98
+ 94     404      SFT 04   cells 94-96: -x: clear the accumulator and take x away
+ 95     797      SUB 97
+ 96     898      JMP 98
+ 97     000      data: x
+ 98     000               set on every call: the jump back to the caller

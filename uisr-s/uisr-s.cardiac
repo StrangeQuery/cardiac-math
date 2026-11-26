@@ -1,0 +1,28 @@
+uisr-s: sqrt(x) to the nearest integer, for x from 0 to 999.
+Cells 79-98. To call it, load x into the accumulator and JMP 79.
+It returns the nearest integer to sqrt(x) in the accumulator.
+It overwrites its own cells and cell 99.
+Size 20 cells. It runs at most 302 instructions, 203.5 on average, counted from cell 79 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 79     696      STO 96   cells 79-81: the call: store x, and copy the return jump from cell 99 into cell 98
+ 80     199      CLA 99
+ 81     698      STO 98
+ 82     196      CLA 96   cells 82-85: x = x - 1, r = 0
+ 83     700      SUB 00
+ 84     696      STO 96
+ 85     796      SUB 96
+ 86     695      STO 95   cells 86-94: take 2r from x while that leaves 0 or more, counting r
+ 87     196      CLA 96
+ 88     795      SUB 95
+ 89     795      SUB 95
+ 90     397      TAC 97
+ 91     696      STO 96
+ 92     195      CLA 95
+ 93     200      ADD 00
+ 94     886      JMP 86
+ 95     000      data: the root r
+ 96     000      data: x, and then what is left
+ 97     195      CLA 95   cell 97: the root into the accumulator
+ 98     000               set on every call: the jump back to the caller

@@ -1,0 +1,107 @@
+The routine alg-a computes the antilogarithm of a three-digit mantissa, by pseudo-multiplication, constants in two
+parts.
+
+Input: a mantissa m from 0 to 999. Result: 100 times 10 to the power m / 1000, rounded, from 100 to 998: the three
+significant digits of the antilogarithm, whose characteristic places the decimal point. A logarithm L = 1000c + m
+gives the number s times 10 to the power c - 2.
+
+Call: load m into the accumulator and JMP 09. It returns with the result in the accumulator.
+Cells 09-98 (90 cells). It writes cell 99 and, of its own cells, 31, 34, 42, 53, 66-71, 98; nothing else.
+Cost: at most 944 instructions a call, 542.0 on average over the domain, counted from the calling JMP to the
+return jump. Worst error: 1 in the last digit (units of the third significant digit) against the correctly rounded
+value, at m = 1; 247 of the 1,000 inputs are off.
+Address bases: cell 54 holds SUB 58; cell 55 holds SUB 61. To move the routine down by d cells, subtract d from
+every address in its instructions that points into cells 09-98 and from the address bases; addresses 00 and 99
+stay as they are.
+
+cell  contents  notes
+ 09      653    STO 53  cells 09-14: save x and the return jump; the first pass starts from P = 1000 (t = 0) and is marked by f = 0
+ 10      199    CLA 99
+ 11      698    STO 98
+ 12      404    SFT 04
+ 13      666    STO 66
+ 14      667    STO 67
+ 15      154    CLA 54  cells 15-29: each pass: the loop's three words back to the first level; P = 1000 + t in h and w; M = 10x in hm and wm
+ 16      631    STO 31
+ 17      155    CLA 55
+ 18      634    STO 34
+ 19      156    CLA 56
+ 20      642    STO 42
+ 21      100    CLA 00
+ 22      668    STO 68
+ 23      166    CLA 66
+ 24      669    STO 69
+ 25      153    CLA 53
+ 26      410    SFT 10
+ 27      671    STO 71
+ 28      403    SFT 03
+ 29      670    STO 70
+ 30      170    CLA 70  cells 30-52: while M >= c, the level's constant (log 2, log 1.1, log 1.01: 3010, 413, 43 ten-thousandths): M = M - c and P = P + P / 10^k
+ 31      758    SUB 58
+ 32      430    SFT 30
+ 33      271    ADD 71
+ 34      761    SUB 61
+ 35      372    TAC 72
+ 36      671    STO 71
+ 37      403    SFT 03
+ 38      670    STO 70
+ 39      168    CLA 68
+ 40      430    SFT 30
+ 41      269    ADD 69
+ 42      400    SFT 00
+ 43      666    STO 66
+ 44      403    SFT 03
+ 45      268    ADD 68
+ 46      430    SFT 30
+ 47      269    ADD 69
+ 48      266    ADD 66
+ 49      669    STO 69
+ 50      403    SFT 03
+ 51      668    STO 68
+ 52      830    JMP 30
+ 53      000    cells 53-71: x; the first level's words SUB A0 and SUB B0 (address bases) and SFT 00, and SFT 03 for the end; the constants' high parts 3, 0, 0 and low parts 10, 413, 43; -1; 8; t; f; P in h and w; M in hm and wm
+ 54      758    the instruction word SUB 58, an address base
+ 55      761    the instruction word SUB 61, an address base
+ 56      400    the instruction word SFT 00
+ 57      403    the instruction word SFT 03
+ 58      003
+ 59      000
+ 60      000
+ 61      010
+ 62      413
+ 63      043
+ 64     -001
+ 65      008
+ 66      000
+ 67      000
+ 68      000
+ 69      000
+ 70      000
+ 71      000
+ 72      142    CLA 42  cells 72-92: the next level: the three words advanced by cell 00's 1; after the last, the second pass from P = 1000 + 2E / 10, E what is left of M
+ 73      200    ADD 00
+ 74      642    STO 42
+ 75      131    CLA 31
+ 76      200    ADD 00
+ 77      631    STO 31
+ 78      134    CLA 34
+ 79      200    ADD 00
+ 80      634    STO 34
+ 81      142    CLA 42
+ 82      757    SUB 57
+ 83      330    TAC 30
+ 84      167    CLA 67
+ 85      393    TAC 93
+ 86      171    CLA 71
+ 87      271    ADD 71
+ 88      401    SFT 01
+ 89      666    STO 66
+ 90      164    CLA 64
+ 91      667    STO 67
+ 92      815    JMP 15
+ 93      168    CLA 68  cells 93-98: the result (P + 8) / 10, and return
+ 94      430    SFT 30
+ 95      269    ADD 69
+ 96      265    ADD 65
+ 97      401    SFT 01
+ 98      000    the return jump, stored here on each call

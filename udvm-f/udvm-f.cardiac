@@ -1,0 +1,46 @@
+udvm-f: x / y and x % y, for x from 0 to 999 and y from 1 to 999.
+Cells 61-98. To call it, put y in cell 79, load x into the accumulator and JMP 61.
+It returns the quotient x / y in the accumulator and the remainder x % y in cell 78.
+It overwrites its own cells and cell 99; y in cell 79 is kept.
+Size 38 cells. It runs at most 275 instructions, 30.3 on average, counted from cell 61 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 61     678      STO 78   cells 61-63: the call: store x, and copy the return jump from cell 99 into cell 98
+ 62     199      CLA 99
+ 63     698      STO 98
+ 64     179      CLA 79   cells 64-67: m = y, q = 0
+ 65     676      STO 76
+ 66     779      SUB 79
+ 67     677      STO 77
+ 68     178      CLA 78   cells 68-75: while x / 10 >= m, m = 10m
+ 69     401      SFT 01
+ 70     776      SUB 76
+ 71     386      TAC 86
+ 72     176      CLA 76
+ 73     410      SFT 10
+ 74     676      STO 76
+ 75     868      JMP 68
+ 76     000      data: m, y times a power of ten
+ 77     000      data: the quotient q
+ 78     000      data: x, and then the remainder
+ 79     000      data: y, which is kept
+ 80     176      CLA 76   cells 80-85: the next level: m = m / 10, q = 10q
+ 81     401      SFT 01
+ 82     676      STO 76
+ 83     177      CLA 77
+ 84     410      SFT 10
+ 85     677      STO 77
+ 86     178      CLA 78   cells 86-93: take m from x while it fits, adding 1 to q each time
+ 87     776      SUB 76
+ 88     394      TAC 94
+ 89     678      STO 78
+ 90     177      CLA 77
+ 91     200      ADD 00
+ 92     677      STO 77
+ 93     886      JMP 86
+ 94     179      CLA 79   cells 94-97: another level while m > y; then the quotient into the accumulator
+ 95     776      SUB 76
+ 96     380      TAC 80
+ 97     177      CLA 77
+ 98     000               set on every call: the jump back to the caller

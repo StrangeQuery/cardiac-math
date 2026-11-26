@@ -1,0 +1,57 @@
+uisq-f: floor(sqrt(x)), for x from 0 to 999.
+Cells 50-98. To call it, load x into the accumulator and JMP 50.
+It returns floor(sqrt(x)) in the accumulator.
+It overwrites its own cells and cell 99.
+Size 49 cells. It runs at most 100 instructions, 32.4 on average, counted from cell 50 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 50     664      STO 64   cells 50-52: the call: store x, and copy the return jump from cell 99 into cell 98
+ 51     199      CLA 99
+ 52     698      STO 98
+ 53     164      CLA 64   cells 53-58: a = x / 100; build CLA 68 + a in cell 59 and CLA 78 + a in cell 61
+ 54     402      SFT 02
+ 55     265      ADD 65
+ 56     659      STO 59
+ 57     266      ADD 66
+ 58     661      STO 61
+ 59     000               cells 59-63: r = r0, and n = r0 squared - x; set by the routine before it runs: CLA of r0 in the table
+ 60     667      STO 67
+ 61     000               set by the routine before it runs: CLA of r0 squared in the table
+ 62     764      SUB 64
+ 63     894      JMP 94
+ 64     000      data: x, and then n
+ 65     168      data: CLA of the first root, an instruction the routine copies and changes
+ 66     010      data: 10, from one table to the other
+ 67     000      data: the root r
+ 68     000      data: floor(sqrt(100a)) for a from 0 to 9
+ 69     010
+ 70     014
+ 71     017
+ 72     020
+ 73     022
+ 74     024
+ 75     026
+ 76     028
+ 77     030
+ 78     000      data: their squares
+ 79     100
+ 80     196
+ 81     289
+ 82     400
+ 83     484
+ 84     576
+ 85     676
+ 86     784
+ 87     900
+ 88     200      ADD 00   cells 88-97: take 2r + 1 while n + 2r < 0, then r into the accumulator
+ 89     664      STO 64
+ 90     167      CLA 67
+ 91     200      ADD 00
+ 92     667      STO 67
+ 93     164      CLA 64
+ 94     267      ADD 67
+ 95     267      ADD 67
+ 96     388      TAC 88
+ 97     167      CLA 67
+ 98     000               set on every call: the jump back to the caller

@@ -1,0 +1,32 @@
+srem-s: x % y, signed, for x from -999 to 999 and y from -999 to 999 but not 0.
+Cells 75-98. To call it, put y in cell 92, load x into the accumulator and JMP 75.
+It returns x % y in the accumulator.
+It overwrites its own cells and cell 99, including y in cell 92 (made |y|).
+Size 24 cells. It runs at most 3,013 instructions, 22.7 on average, counted from cell 75 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 75     691      STO 91   cells 75-77: the call: store x, and copy the return jump from cell 99 into cell 98
+ 76     199      CLA 99
+ 77     698      STO 98
+ 78     192      CLA 92   cells 78-79: y < 0: make it -y
+ 79     387      TAC 87
+ 80     191      CLA 91   cells 80-86: x >= 0: take y away until below 0, then add it back
+ 81     393      TAC 93
+ 82     792      SUB 92
+ 83     385      TAC 85
+ 84     882      JMP 82
+ 85     292      ADD 92
+ 86     898      JMP 98
+ 87     792      SUB 92   cells 87-90: y = -y
+ 88     792      SUB 92
+ 89     692      STO 92
+ 90     880      JMP 80
+ 91     000      data: x
+ 92     000      data: y, made |y|
+ 93     700      SUB 00   cells 93-97: x < 0: from r - 1, add y while r + y <= 0, then back to r
+ 94     292      ADD 92
+ 95     394      TAC 94
+ 96     792      SUB 92
+ 97     200      ADD 00
+ 98     000               set on every call: the jump back to the caller

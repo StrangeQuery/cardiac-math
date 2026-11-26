@@ -1,0 +1,79 @@
+sdvm-f: x / y and x % y, signed, for x from -999 to 999 and y from -999 to 999 but not 0.
+Cells 28-98. To call it, put y in cell 54, load x into the accumulator and JMP 28.
+It returns the quotient x / y in the accumulator and the remainder x % y in cell 53.
+It overwrites its own cells and cell 99, including y in cell 54 (made |y|).
+Size 71 cells. It runs at most 304 instructions, 50.3 on average, counted from cell 28 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 28     653      STO 53   cells 28-30: the call: store x, and copy the return jump from cell 99 into cell 98
+ 29     199      CLA 99
+ 30     698      STO 98
+ 31     153      CLA 53   cells 31-33: record x's sign in t; x < 0: negate x and y
+ 32     652      STO 52
+ 33     378      TAC 78
+ 34     154      CLA 54   cells 34-36: record y's sign in s, the quotient's sign; y < 0: negate y
+ 35     651      STO 51
+ 36     391      TAC 91
+ 37     154      CLA 54   cells 37-40: m = y, q = 0
+ 38     649      STO 49
+ 39     754      SUB 54
+ 40     650      STO 50
+ 41     153      CLA 53   cells 41-48: while x / 10 >= m, m = 10m
+ 42     401      SFT 01
+ 43     749      SUB 49
+ 44     361      TAC 61
+ 45     149      CLA 49
+ 46     410      SFT 10
+ 47     649      STO 49
+ 48     841      JMP 41
+ 49     000      data: m, |y| times a power of ten
+ 50     000      data: the quotient q
+ 51     000      data: the quotient's sign
+ 52     000      data: x as it came, for its sign
+ 53     000      data: x, and then the remainder
+ 54     000      data: y, made |y|
+ 55     149      CLA 49   cells 55-60: the next level: m = m / 10, q = 10q
+ 56     401      SFT 01
+ 57     649      STO 49
+ 58     150      CLA 50
+ 59     410      SFT 10
+ 60     650      STO 50
+ 61     153      CLA 53   cells 61-68: take m from x while it fits, adding 1 to q each time
+ 62     749      SUB 49
+ 63     369      TAC 69
+ 64     653      STO 53
+ 65     150      CLA 50
+ 66     200      ADD 00
+ 67     650      STO 50
+ 68     861      JMP 61
+ 69     154      CLA 54   cells 69-77: another level while m > y; then the signs
+ 70     749      SUB 49
+ 71     355      TAC 55
+ 72     152      CLA 52
+ 73     386      TAC 86
+ 74     151      CLA 51
+ 75     395      TAC 95
+ 76     150      CLA 50
+ 77     898      JMP 98
+ 78     753      SUB 53   cells 78-85: x < 0: x = -x, y = -y
+ 79     753      SUB 53
+ 80     653      STO 53
+ 81     154      CLA 54
+ 82     754      SUB 54
+ 83     754      SUB 54
+ 84     654      STO 54
+ 85     834      JMP 34
+ 86     153      CLA 53   cells 86-90: x was negative: the remainder negated
+ 87     753      SUB 53
+ 88     753      SUB 53
+ 89     653      STO 53
+ 90     874      JMP 74
+ 91     754      SUB 54   cells 91-94: y < 0: y = -y
+ 92     754      SUB 54
+ 93     654      STO 54
+ 94     837      JMP 37
+ 95     150      CLA 50   cells 95-97: the quotient negated into the accumulator
+ 96     750      SUB 50
+ 97     750      SUB 50
+ 98     000               set on every call: the jump back to the caller

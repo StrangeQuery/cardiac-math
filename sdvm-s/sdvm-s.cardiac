@@ -1,0 +1,55 @@
+sdvm-s: x / y and x % y, signed, for x from -999 to 999 and y from -999 to 999 but not 0.
+Cells 52-98. To call it, put y in cell 89, load x into the accumulator and JMP 52.
+It returns the quotient x / y in the accumulator and the remainder x % y in cell 88.
+It overwrites its own cells and cell 99, including y in cell 89 (negated when x < 0).
+Size 47 cells. It runs at most 8,021 instructions, 49.8 on average, counted from cell 52 to the return jump in cell 98.
+Exact over the domain.
+
+cell  contents   notes
+ 52     688      STO 88   cells 52-54: the call: store x, and copy the return jump from cell 99 into cell 98
+ 53     199      CLA 99
+ 54     698      STO 98
+ 55     188      CLA 88   cells 55-57: record x's sign in s; x < 0: negate x and y
+ 56     687      STO 87
+ 57     378      TAC 78
+ 58     189      CLA 89   cells 58-68: y > 0: q = 0, then take y from x while that leaves 0 or more, counting q up
+ 59     369      TAC 69
+ 60     789      SUB 89
+ 61     686      STO 86
+ 62     188      CLA 88
+ 63     789      SUB 89
+ 64     390      TAC 90
+ 65     688      STO 88
+ 66     186      CLA 86
+ 67     200      ADD 00
+ 68     861      JMP 61
+ 69     789      SUB 89   cells 69-77: y < 0: q = 0, then add y to x while that leaves 0 or more, counting q down
+ 70     686      STO 86
+ 71     188      CLA 88
+ 72     289      ADD 89
+ 73     390      TAC 90
+ 74     688      STO 88
+ 75     186      CLA 86
+ 76     700      SUB 00
+ 77     870      JMP 70
+ 78     788      SUB 88   cells 78-85: x < 0: x = -x, y = -y
+ 79     788      SUB 88
+ 80     688      STO 88
+ 81     189      CLA 89
+ 82     789      SUB 89
+ 83     789      SUB 89
+ 84     689      STO 89
+ 85     858      JMP 58
+ 86     000      data: the quotient q
+ 87     000      data: x as it came, for its sign
+ 88     000      data: x, and then the remainder
+ 89     000      data: y, negated when x < 0
+ 90     187      CLA 87   cells 90-97: the remainder takes x's sign; the quotient into the accumulator
+ 91     393      TAC 93
+ 92     897      JMP 97
+ 93     188      CLA 88
+ 94     788      SUB 88
+ 95     788      SUB 88
+ 96     688      STO 88
+ 97     186      CLA 86
+ 98     000               set on every call: the jump back to the caller
