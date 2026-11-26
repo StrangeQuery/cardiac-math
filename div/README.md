@@ -11,13 +11,13 @@ mean over the whole domain; the caller's set-up and JMP are not counted.
 
 | Routine | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
-| [udvm-s](udvm-s.cardiac) | x / y, x % y | x 0..999, y 1..999 | 17 (82-98) | 8,002 / 36.3 | own cells, 99 |
-| **[udvm-m](udvm-m.cardiac)** | **x / y, x % y** | **x 0..999, y 1..999** | **34 (65-98)** | **1,178 / 28.6** | **own cells, 99** |
-| [udvm-f](udvm-f.cardiac) | x / y, x % y | x 0..999, y 1..999 | 38 (61-98) | 275 / 30.3 | own cells, 99 |
-| [urem-s](urem-s.cardiac) | x % y | x 0..999, y 1..999 | 11 (88-98) | 3,005 / 17.9 | own cells, 99 |
-| [sdvm-s](sdvm-s.cardiac) | x / y, x % y | x, y -999..999, y not 0 | 47 (52-98) | 8,021 / 49.8 | own cells, 99, y |
-| [sdvm-f](sdvm-f.cardiac) | x / y, x % y | x, y -999..999, y not 0 | 71 (28-98) | 304 / 50.3 | own cells, 99, y |
-| [srem-s](srem-s.cardiac) | x % y | x, y -999..999, y not 0 | 24 (75-98) | 3,013 / 22.7 | own cells, 99, y |
+| [udvm-s](udvm-s.cq) | x / y, x % y | x 0..999, y 1..999 | 17 (82-98) | 8,002 / 36.3 | own cells, 99 |
+| **[udvm-m](udvm-m.cq)** | **x / y, x % y** | **x 0..999, y 1..999** | **34 (65-98)** | **1,178 / 28.6** | **own cells, 99** |
+| [udvm-f](udvm-f.cq) | x / y, x % y | x 0..999, y 1..999 | 38 (61-98) | 275 / 30.3 | own cells, 99 |
+| [urem-s](urem-s.cq) | x % y | x 0..999, y 1..999 | 11 (88-98) | 3,005 / 17.9 | own cells, 99 |
+| [sdvm-s](sdvm-s.cq) | x / y, x % y | x, y -999..999, y not 0 | 47 (52-98) | 8,021 / 49.8 | own cells, 99, y |
+| [sdvm-f](sdvm-f.cq) | x / y, x % y | x, y -999..999, y not 0 | 71 (28-98) | 304 / 50.3 | own cells, 99, y |
+| [srem-s](srem-s.cq) | x % y | x, y -999..999, y not 0 | 24 (75-98) | 3,013 / 22.7 | own cells, 99, y |
 
 The default is **udvm-m**: the lowest mean of the three divmods (28.6), a worst case under a seventh of udvm-s's,
 and 4 cells fewer than udvm-f.
@@ -67,26 +67,26 @@ cost more.
 
 | Routine | Computes | Domain | Cells | Instructions | Smallest | Through udvm-m: cells, instructions | Shipped because |
 |---|---|---|---|---|---|---|---|
-| [sdiv2](sdiv2.cardiac) | x / 2 | -999..999 | 6 | 6 | proven | 5 (39); 632 / 326.5 | 105x faster at worst, 54x at mean |
-| [sdiv3](sdiv3.cardiac) | x / 3 | -999..999 | 17 | 17 | at least 11 | 5 (39); 445 / 234.6 | 26x faster at worst, 14x at mean |
-| [sdiv4](sdiv4.cardiac) | x / 4 | -999..999 | 9 | 9 | proven | 5 (39); 357 / 189.0 | 40x faster at worst, 21x at mean |
-| [sdiv5](sdiv5.cardiac) | x / 5 | -999..999 | 3 | 3 | proven | 5 (39); 302 / 161.5 | 101x faster at worst, 54x at mean; smaller |
-| [sdiv6](sdiv6.cardiac) | x / 6 | -999..999 | 17 | 17 | at least 11 | 5 (39); 258 / 142.7 | 15x faster at worst, 8x at mean |
-| [sdiv7](sdiv7.cardiac) | x / 7 | -999..999 | 11 | 11 | proven | 5 (39); 236 / 129.6 | 21x faster at worst, 12x at mean |
-| [sdiv8](sdiv8.cardiac) | x / 8 | -999..999 | 11 | 11 | proven | 5 (39); 214 / 119.6 | 19x faster at worst, 11x at mean |
-| [sdiv9](sdiv9.cardiac) | x / 9 | -999..999 | 9 | 9 | proven | 5 (39); 203 / 112.3 | 23x faster at worst, 12x at mean |
-| [sdiv11](sdiv11.cardiac) | x / 11 | -999..999 | 8 | 8 | proven | 5 (39); 181 / 101.2 | 23x faster at worst, 13x at mean |
-| [sdiv12](sdiv12.cardiac) | x / 12 | -999..999 | 18 | 18 | at least 11 | 5 (39); 170 / 96.4 | 9x faster at worst, 5x at mean |
-| [udiv12](udiv12.cardiac) | x / 12 | 0..999 | 14 | 14 | at least 11 | 5 (39); 170 / 96.4 | 12x faster at worst, 7x at mean; 4 cells under sdiv12 |
-| [sdiv25](sdiv25.cardiac) | x / 25 | -999..999 | 5 | 5 | proven | 5 (39); 126 / 73.5 | 25x faster at worst, 15x at mean; no larger |
-| [srem2](srem2.cardiac) | x % 2 | -999..999 | 10 | 9 | proven | 6 (40); 633 / 327.5 | 70x faster at worst, 36x at mean |
-| [srem3](srem3.cardiac) | x % 3 | -999..999 | 20 | 19 | at least 11 | 6 (40); 446 / 235.6 | 23x faster at worst, 12x at mean |
-| [urem3](urem3.cardiac) | x % 3 | 0..999 | 16 | 15 | at least 11 | 6 (40); 446 / 235.6 | 30x faster at worst, 16x at mean; 4 cells under srem3 |
-| [srem4](srem4.cardiac) | x % 4 | -999..999 | 15 | 14 | at least 11 | 6 (40); 358 / 190.0 | 26x faster at worst, 14x at mean |
-| [srem5](srem5.cardiac) | x % 5 | -999..999 | 10 | 9 | proven | 6 (40); 303 / 162.5 | 34x faster at worst, 18x at mean |
-| [srem9](srem9.cardiac) | x % 9 | -999..999 | 10 | 10 | proven | 6 (40); 204 / 113.3 | 20x faster at worst, 11x at mean |
-| [srem12](srem12.cardiac) | x % 12 | -999..999 | 26 | 25 | at least 11 | 6 (40); 171 / 97.4 | 7x faster at worst, 4x at mean |
-| [urem12](urem12.cardiac) | x % 12 | 0..999 | 22 | 21 | at least 11 | 6 (40); 171 / 97.4 | 8x faster at worst, 5x at mean; 4 cells under srem12 |
+| [sdiv2](sdiv2.cq) | x / 2 | -999..999 | 6 | 6 | proven | 5 (39); 632 / 326.5 | 105x faster at worst, 54x at mean |
+| [sdiv3](sdiv3.cq) | x / 3 | -999..999 | 17 | 17 | at least 11 | 5 (39); 445 / 234.6 | 26x faster at worst, 14x at mean |
+| [sdiv4](sdiv4.cq) | x / 4 | -999..999 | 9 | 9 | proven | 5 (39); 357 / 189.0 | 40x faster at worst, 21x at mean |
+| [sdiv5](sdiv5.cq) | x / 5 | -999..999 | 3 | 3 | proven | 5 (39); 302 / 161.5 | 101x faster at worst, 54x at mean; smaller |
+| [sdiv6](sdiv6.cq) | x / 6 | -999..999 | 17 | 17 | at least 11 | 5 (39); 258 / 142.7 | 15x faster at worst, 8x at mean |
+| [sdiv7](sdiv7.cq) | x / 7 | -999..999 | 11 | 11 | proven | 5 (39); 236 / 129.6 | 21x faster at worst, 12x at mean |
+| [sdiv8](sdiv8.cq) | x / 8 | -999..999 | 11 | 11 | proven | 5 (39); 214 / 119.6 | 19x faster at worst, 11x at mean |
+| [sdiv9](sdiv9.cq) | x / 9 | -999..999 | 9 | 9 | proven | 5 (39); 203 / 112.3 | 23x faster at worst, 12x at mean |
+| [sdiv11](sdiv11.cq) | x / 11 | -999..999 | 8 | 8 | proven | 5 (39); 181 / 101.2 | 23x faster at worst, 13x at mean |
+| [sdiv12](sdiv12.cq) | x / 12 | -999..999 | 18 | 18 | at least 11 | 5 (39); 170 / 96.4 | 9x faster at worst, 5x at mean |
+| [udiv12](udiv12.cq) | x / 12 | 0..999 | 14 | 14 | at least 11 | 5 (39); 170 / 96.4 | 12x faster at worst, 7x at mean; 4 cells under sdiv12 |
+| [sdiv25](sdiv25.cq) | x / 25 | -999..999 | 5 | 5 | proven | 5 (39); 126 / 73.5 | 25x faster at worst, 15x at mean; no larger |
+| [srem2](srem2.cq) | x % 2 | -999..999 | 10 | 9 | proven | 6 (40); 633 / 327.5 | 70x faster at worst, 36x at mean |
+| [srem3](srem3.cq) | x % 3 | -999..999 | 20 | 19 | at least 11 | 6 (40); 446 / 235.6 | 23x faster at worst, 12x at mean |
+| [urem3](urem3.cq) | x % 3 | 0..999 | 16 | 15 | at least 11 | 6 (40); 446 / 235.6 | 30x faster at worst, 16x at mean; 4 cells under srem3 |
+| [srem4](srem4.cq) | x % 4 | -999..999 | 15 | 14 | at least 11 | 6 (40); 358 / 190.0 | 26x faster at worst, 14x at mean |
+| [srem5](srem5.cq) | x % 5 | -999..999 | 10 | 9 | proven | 6 (40); 303 / 162.5 | 34x faster at worst, 18x at mean |
+| [srem9](srem9.cq) | x % 9 | -999..999 | 10 | 10 | proven | 6 (40); 204 / 113.3 | 20x faster at worst, 11x at mean |
+| [srem12](srem12.cq) | x % 12 | -999..999 | 26 | 25 | at least 11 | 6 (40); 171 / 97.4 | 7x faster at worst, 4x at mean |
+| [urem12](urem12.cq) | x % 12 | 0..999 | 22 | 21 | at least 11 | 6 (40); 171 / 97.4 | 8x faster at worst, 5x at mean; 4 cells under srem12 |
 
 The udvm-m figures per call are 4 or 5 instructions of set-up and these counts inside udvm-m (worst / mean, x from 0
 to 999): y = 2: 628 / 322.5; 3: 441 / 230.6; 4: 353 / 185.0; 5: 298 / 157.5; 6: 254 / 138.7; 7: 232 / 125.6;
