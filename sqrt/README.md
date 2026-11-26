@@ -5,10 +5,10 @@ per variant.
 
 | Variant | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
-| **uisq-s** | floor(sqrt(x)) | x from 0 to 999 | 18 (81-98) | 322 / 217.8 | nothing |
-| uisq-f | floor(sqrt(x)) | x from 0 to 999 | 49 (50-98) | 100 / 32.4 | nothing |
-| uisr-s | sqrt(x) to the nearest integer | x from 0 to 999 | 20 (79-98) | 302 / 203.5 | nothing |
-| uisr-f | sqrt(x) to the nearest integer | x from 0 to 999 | 56 (43-98) | 105 / 37.4 | nothing |
+| **uisq-s** | floor(sqrt(x)) | x from 0 to 999 | 18 | 322 / 217.8 | nothing |
+| uisq-f | floor(sqrt(x)) | x from 0 to 999 | 49 | 100 / 32.4 | nothing |
+| uisr-s | sqrt(x) to the nearest integer | x from 0 to 999 | 20 | 302 / 203.5 | nothing |
+| uisr-f | sqrt(x) to the nearest integer | x from 0 to 999 | 56 | 105 / 37.4 | nothing |
 
 Default: **uisq-s**. Floor is the usual integer root, and at 18 cells it costs a third of the cells of uisq-f; its
 worst case of 322 instructions is rarely what limits a program.
@@ -57,7 +57,7 @@ cell  contents   notes
 
 - Answer: floor(sqrt(x)) in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 18, cells 81-98.
+- Cells: 18.
 - Instructions: worst 322, mean 217.8.
 - Algorithm: sum of odd numbers. It counts the odd numbers 1, 3, 5, ... that can be taken from x; the count is the
   root.
@@ -82,7 +82,7 @@ cell  contents   notes
 
 - Answer: floor(sqrt(x)) in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 49, cells 50-98.
+- Cells: 49.
 - Instructions: worst 100, mean 32.4.
 - Algorithm: a table start, then the sum of odd numbers. r0 = floor(sqrt(100a)) and r0^2 for a = x / 100 come from
   two ten-cell tables, then at most nine odd numbers are taken from 2 r0 + 1.
@@ -107,7 +107,7 @@ cell  contents   notes
 
 - Answer: the nearest integer to sqrt(x) in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 20, cells 79-98.
+- Cells: 20.
 - Instructions: worst 302, mean 203.5.
 - Algorithm: sum of even numbers. The nearest root counts the k >= 1 with x >= k^2 - k + 1, whose differences are
   2, 4, 6, ..., so it is the odd-number loop with 2r for 2r + 1, from x - 1. No ties occur.
@@ -132,7 +132,7 @@ cell  contents   notes
 
 - Answer: the nearest integer to sqrt(x) in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 56, cells 43-98.
+- Cells: 56.
 - Instructions: worst 105, mean 37.4.
 - Algorithm: the table start and odd numbers of uisq-f for r = floor(sqrt(x)), then r + 1 when x - r^2 > r, since
   (r + 1/2)^2 = r^2 + r + 1/4.

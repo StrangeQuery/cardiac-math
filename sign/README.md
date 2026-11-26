@@ -4,8 +4,8 @@ Negation -x and absolute value |x| on CARDIAC's three-digit cells, one listing p
 
 | Variant | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
-| **sneg-s** | -x | x from -999 to 999 | 8 (91-98) | 7 / 7.0 | nothing |
-| **sabs-s** | \|x\| | x from -999 to 999 | 10 (89-98) | 8 / 7.5 | nothing |
+| **sneg-s** | -x | x from -999 to 999 | 8 | 7 / 7.0 | nothing |
+| **sabs-s** | \|x\| | x from -999 to 999 | 10 | 8 / 7.5 | nothing |
 
 Default: **sneg-s** and **sabs-s**, the only negate and the only absolute value.
 
@@ -45,7 +45,7 @@ cell  contents   notes
 
 - Answer: -x in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 8, cells 91-98.
+- Cells: 8.
 - Instructions: worst 7, mean 7.0.
 - Algorithm: `SFT 04` clears the accumulator, then `SUB x`.
 - Sources: none found for this form.
@@ -70,7 +70,7 @@ cell  contents   notes
 
 - Answer: \|x\| in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 10, cells 89-98.
+- Cells: 10.
 - Instructions: worst 8, mean 7.5.
 - Algorithm: a sign test; for x < 0, x - x - x = -x.
 - Sources: none found for this form.

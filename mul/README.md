@@ -4,11 +4,11 @@ Multiplication x * y and squaring x * x on CARDIAC's three-digit cells, one list
 
 | Variant | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
-| umul-s | x * y | y >= 0, \|x * y\| <= 999, x of either sign | 17 (82-98) | 8,002 / 1,011.4 | y (cell 96) |
-| **umul-m** | x * y | x, y >= 0, x * y <= 999 | 27 (72-98) | 267 / 52.8 | y (cell 96) |
-| umul-f | x * y | x, y >= 0, x * y <= 999 | 39 (60-98) | 84 / 44.0 | y (cell 96) |
-| usqr-s | x * x | x from 0 to 31 | 17 (82-98) | 289 / 149.5 | nothing |
-| usqr-f | x * x | x from 0 to 31 | 43 (56-98) | 9 / 9.0 | nothing |
+| umul-s | x * y | y >= 0, \|x * y\| <= 999, x of either sign | 17 | 8,002 / 1,011.4 | y (cell 96) |
+| **umul-m** | x * y | x, y >= 0, x * y <= 999 | 27 | 267 / 52.8 | y (cell 96) |
+| umul-f | x * y | x, y >= 0, x * y <= 999 | 39 | 84 / 44.0 | y (cell 96) |
+| usqr-s | x * x | x from 0 to 31 | 17 | 289 / 149.5 | nothing |
+| usqr-f | x * x | x from 0 to 31 | 43 | 9 / 9.0 | nothing |
 
 Default: **umul-m**. Its worst case is 30 times better than umul-s's for 10 more cells, and it doesn't depend on
 the caller putting the smaller operand in y.
@@ -66,7 +66,7 @@ cell  contents   notes
 
 - Answer: x * y in the accumulator.
 - Destroys: y (cell 96), counted down to 0.
-- Cells: 17, cells 82-98.
+- Cells: 17.
 - Instructions: worst 8,002, mean 1,011.4.
 - Algorithm: repeated addition. x is added once for each unit of y, so put the smaller operand in y.
 - Sources: [TAYLOR].
@@ -94,7 +94,7 @@ cell  contents   notes
 
 - Answer: x * y in the accumulator.
 - Destroys: y (cell 96), which becomes the smaller operand and is counted down to 0.
-- Cells: 27, cells 72-98.
+- Cells: 27.
 - Instructions: worst 267, mean 52.8.
 - Algorithm: repeated addition counting the smaller operand. x and y are exchanged when x < y, then x is added once
   for each unit of y. The loop turns at most 31 times, since the smaller operand of a product up to 999 is at most
@@ -123,7 +123,7 @@ cell  contents   notes
 
 - Answer: x * y in the accumulator.
 - Destroys: y (cell 96), divided down to 0.
-- Cells: 39, cells 60-98.
+- Cells: 39.
 - Instructions: worst 84, mean 44.0.
 - Algorithm: multiplication by digit with a computed jump. For each digit d of y, from the last, it jumps into a row
   of nine `ADD x` at d cells from its end (the computed GO TO of FORTRAN, Duff's device), then takes y / 10 and 10x.
@@ -148,7 +148,7 @@ cell  contents   notes
 
 - Answer: x * x in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 17, cells 82-98.
+- Cells: 17.
 - Instructions: worst 289, mean 149.5.
 - Algorithm: sum of odd numbers. x * x = 1 + 3 + ... + (2x - 1), with x's cell counted down.
 - Sources: [NICOMACHUS].
@@ -173,7 +173,7 @@ cell  contents   notes
 
 - Answer: x * x in the accumulator.
 - Destroys: nothing but cell 99 and its own work cells.
-- Cells: 43, cells 56-98.
+- Cells: 43.
 - Instructions: worst 9, mean 9.0 (every call takes 9).
 - Algorithm: a table of squares, read by a `CLA` built from x.
 - Sources: none found for this form.

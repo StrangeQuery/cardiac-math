@@ -4,19 +4,19 @@ Common and natural logarithms, antilogarithms and e^x, for CARDIAC.
 
 | Name | Computes | Format and range | Cells | Instructions worst / mean | Worst error | Destroys |
 |---|---|---|---|---|---|---|
-| **[`lgt-s`](#lgt-s)** | 1000 log10 x | x 1..999; 0..3000 (characteristic and mantissa) | 22-98 (77) | 264 / 138.4 | 1 thousandth | 99, 69-71, 98 |
-| [`lgt-a`](#lgt-a) | 1000 log10 x | x 1..999; 0..3000 (characteristic and mantissa) | 15-98 (84) | 287 / 152.5 | 1 thousandth | 99, 67-70, 98 |
-| [`lnx-s`](#lnx-s) | 1000 ln x | x 1..999; 0..6908 | 19-98 (80) | 252 / 119.9 | 2 thousandths | 99, 67-69, 98 |
-| [`lnx-a`](#lnx-a) | 1000 ln x | x 1..999; 0..6908 | 12-98 (87) | 283 / 133.9 | 1 thousandth | 99, 65-68, 98 |
-| [`alg-s`](#alg-s) | 100 x 10^(m / 1000) | mantissa 0..999; 100..998 | 12-98 (87) | 911 / 525.3 | 2 in the third digit | 99, 33, 41, 52, 61-66, 98 |
-| [`alg-a`](#alg-a) | 100 x 10^(m / 1000) | mantissa 0..999; 100..998 | 09-98 (90) | 943 / 541.0 | 1 in the third digit | 99, 31, 34, 42, 53, 66-71, 98 |
-| [`exp-s`](#exp-s) | 100 e^(v / 1000) | v 0..2302 (x = v / 1000); 100..999 | 12-98 (87) | 910 / 524.8 | 1 in the third digit | 99, 33, 41, 52, 62-67, 98 |
+| **[`lgt-s`](#lgt-s)** | 1000 log10 x | x 1..999; 0..3000 (characteristic and mantissa) | 77 | 264 / 138.4 | 1 thousandth | 99 |
+| [`lgt-a`](#lgt-a) | 1000 log10 x | x 1..999; 0..3000 (characteristic and mantissa) | 84 | 287 / 152.5 | 1 thousandth | 99 |
+| [`lnx-s`](#lnx-s) | 1000 ln x | x 1..999; 0..6908 | 80 | 252 / 119.9 | 2 thousandths | 99 |
+| [`lnx-a`](#lnx-a) | 1000 ln x | x 1..999; 0..6908 | 87 | 283 / 133.9 | 1 thousandth | 99 |
+| [`alg-s`](#alg-s) | 100 x 10^(m / 1000) | mantissa 0..999; 100..998 | 87 | 911 / 525.3 | 2 in the third digit | 99 |
+| [`alg-a`](#alg-a) | 100 x 10^(m / 1000) | mantissa 0..999; 100..998 | 90 | 943 / 541.0 | 1 in the third digit | 99 |
+| [`exp-s`](#exp-s) | 100 e^(v / 1000) | v 0..2302 (x = v / 1000); 100..999 | 87 | 910 / 524.8 | 1 in the third digit | 99 |
 
 Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest cells (77), laid out as a table of logarithms gives it, characteristic and mantissa.
 
 - Instructions count from the routine's entry to its return jump, both included; the caller's JMP is not counted.
 - Errors for tan, atn and at2 are the distance from the exact value (a correctly rounded routine has at most 0.5); for the others, the difference from the correctly rounded value.
-- Destroys: cell 99 and the routine's own cells listed; no other cell.
+- Destroys: cell 99 and the routine's own work cells; no other cell.
 
 ## When to choose another
 
@@ -51,8 +51,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 2301, more than a cell holds; STO keeps 301 and SFT 03 leaves 2.
-- Destroys: cell 99 and its own cells 69-71, 98; the accumulator returns the result.
-- Cells: 22-98 (77).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 77.
 - Instructions: worst 264, mean 138.4.
 - Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 9; 241 of 999 inputs off.
 - Algorithm: Meggitt's decimal pseudo-division in the form of Briggs's radix method: x doubled to 500..999 (exact), then multiplied by 1.1 and by 1.01 while it stays at most 1000, each factor's logarithm added to a sum held in two cells; the work is on the remainder 1000 - y (Meggitt's renormalised pseudo remainder, so three digits carry five places); what is left is its own logarithm up to a factor (Briggs's and Meggitt's tail rule); three-digit remainder, the 1.1 steps rounded.
@@ -85,8 +85,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 2301, more than a cell holds; STO keeps 301 and SFT 03 leaves 2.
-- Destroys: cell 99 and its own cells 67-70, 98; the accumulator returns the result.
-- Cells: 15-98 (84).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 84.
 - Instructions: worst 287, mean 152.5.
 - Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 11; 145 of 999 inputs off.
 - Algorithm: Meggitt's decimal pseudo-division in the form of Briggs's radix method: x doubled to 500..999 (exact), then multiplied by 1.1 and by 1.01 while it stays at most 1000, each factor's logarithm added to a sum held in two cells; the work is on the remainder 1000 - y (Meggitt's renormalised pseudo remainder, so three digits carry five places); what is left is its own logarithm up to a factor (Briggs's and Meggitt's tail rule); four-digit remainder in the 1.1 steps (its tenths in a cell of their own), which divides their rounding error by ten.
@@ -118,8 +118,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 4605, more than a cell holds; STO keeps 605 and SFT 03 leaves 4.
-- Destroys: cell 99 and its own cells 67-69, 98; the accumulator returns the result.
-- Cells: 19-98 (80).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 80.
 - Instructions: worst 252, mean 119.9.
 - Worst error: 2 in the last digit (thousandths) against the correctly rounded value, at x = 19; 405 of 999 inputs off.
 - Algorithm: Meggitt's decimal pseudo-division in the form of Briggs's radix method: x doubled to 500..999 (exact), then multiplied by 1.1 and by 1.02 while it stays at most 1000, each factor's logarithm added to a sum held in two cells; the work is on the remainder 1000 - y (Meggitt's renormalised pseudo remainder, so three digits carry five places); what is left is its own logarithm up to a factor (Briggs's and Meggitt's tail rule); three-digit remainder, the 1.1 steps rounded.
@@ -151,8 +151,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 4605, more than a cell holds; STO keeps 605 and SFT 03 leaves 4.
-- Destroys: cell 99 and its own cells 65-68, 98; the accumulator returns the result.
-- Cells: 12-98 (87).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 87.
 - Instructions: worst 283, mean 133.9.
 - Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 4; 110 of 999 inputs off.
 - Algorithm: Meggitt's decimal pseudo-division in the form of Briggs's radix method: x doubled to 500..999 (exact), then multiplied by 1.1 and by 1.02 while it stays at most 1000, each factor's logarithm added to a sum held in two cells; the work is on the remainder 1000 - y (Meggitt's renormalised pseudo remainder, so three digits carry five places); what is left is its own logarithm up to a factor (Briggs's and Meggitt's tail rule); four-digit remainder in the 1.1 steps (its tenths in a cell of their own), which divides their rounding error by ten.
@@ -181,8 +181,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 200.
-- Destroys: cell 99 and its own cells 33, 41, 52, 61-66, 98; the accumulator returns the result.
-- Cells: 12-98 (87).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 87.
 - Instructions: worst 911, mean 525.3.
 - Worst error: 2 in the last digit (units of the third significant digit) against the correctly rounded value, at m = 965; 269 of 1,000 inputs off.
 - Algorithm: Meggitt's decimal pseudo-multiplication with the tail first: the exponent is divided by the logarithms of 2, 1.1 and 1.01 while the product P (four digits in two cells) is multiplied by each factor, P + P / 10^k; what is left of the exponent is a factor 1 + cE applied by starting P at 1000 + cE, so the routine makes two passes, the first only to find E; the loop's SUB and SFT words are advanced from level to level and set back each pass; the exponent rescaled by ten from level to level, as Meggitt does (constants 301, 413, 432).
@@ -211,8 +211,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 05 runs: 200.
-- Destroys: cell 99 and its own cells 31, 34, 42, 53, 66-71, 98; the accumulator returns the result.
-- Cells: 09-98 (90).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 90.
 - Instructions: worst 943, mean 541.0.
 - Worst error: 1 in the last digit (units of the third significant digit) against the correctly rounded value, at m = 1; 247 of 1,000 inputs off.
 - Algorithm: Meggitt's decimal pseudo-multiplication with the tail first: the exponent is divided by the logarithms of 2, 1.1 and 1.01 while the product P (four digits in two cells) is multiplied by each factor, P + P / 10^k; what is left of the exponent is a factor 1 + cE applied by starting P at 1000 + cE, so the routine makes two passes, the first only to find E; the loop's SUB and SFT words are advanced from level to level and set back each pass; the constants kept in high and low parts (3010 as 3 and 10), the exponent at one scale.
@@ -245,8 +245,8 @@ Default: **lgt-s**, the common logarithm to within 1 thousandth in the fewest ce
   ```
 
   The result is in the accumulator when cell 07 runs: 272.
-- Destroys: cell 99 and its own cells 33, 41, 52, 62-67, 98; the accumulator returns the result. The thousands' operand cell 53 is kept, so a run of calls with one thousands digit stores it once.
-- Cells: 12-98 (87).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result. The thousands' operand cell 53 is kept, so a run of calls with one thousands digit stores it once.
+- Cells: 87.
 - Instructions: worst 910, mean 524.8.
 - Worst error: 1 in the last digit (units of the third significant digit) against the correctly rounded value, at v = 1; 522 of 2,303 inputs off.
 - Algorithm: Meggitt's decimal pseudo-multiplication with the tail first: the exponent is divided by the logarithms of 2, 1.1 and 1.01 while the product P (four digits in two cells) is multiplied by each factor, P + P / 10^k; what is left of the exponent is a factor 1 + cE applied by starting P at 1000 + cE, so the routine makes two passes, the first only to find E; the loop's SUB and SFT words are advanced from level to level and set back each pass; the constants of ln: 0.693, 0.0953, 0.00995; the exponent rescaled by ten from level to level.

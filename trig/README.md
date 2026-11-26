@@ -4,22 +4,22 @@ Sine, cosine, tangent, arctangent and atan2 in whole degrees, for CARDIAC.
 
 | Name | Computes | Format and range | Cells | Instructions worst / mean | Worst error | Destroys |
 |---|---|---|---|---|---|---|
-| [`sin-s`](#sin-s) | 1000 sin x | x 0..359 degrees; -999..999 | 33-98 (66) | 112 / 70.8 | 3 thousandths | 99, 64-65, 67, 72-73, 97-98 |
-| **[`sin-m`](#sin-m)** | 1000 sin x | x 0..359 degrees; -999..999 | 27-98 (72) | 112 / 73.5 | 1 thousandth | 99, 59-60, 62, 66-67, 89, 98 |
-| [`sin-f`](#sin-f) | 1000 sin x | x 0..359 degrees; -999..999 | 18-98 (81) | 52 / 45.5 | 1 thousandth | 99, 48-49, 52-53, 58-60, 89, 98 |
-| [`scs-s`](#scs-s) | 1000 sin x and 1000 cos x | x 0..359 degrees; -999..999 | 32-98 (67) | sin 112 / 70.8; cos 113 / 72.0 | sin 3; cos 3 thousandths | 99, 64-65, 67, 72-73, 97-98 |
-| **[`scs-a`](#scs-a)** | 1000 sin x and 1000 cos x | x 0..359 degrees; -999..999 | 22-98 (77) | sin 112 / 73.5; cos 115 / 76.8 | sin 1; cos 1 thousandths | 99, 58-59, 61, 66-67, 89, 98 |
-| [`tan-s`](#tan-s) | 100 tan x | x 0..359 degrees; -999..999, saturating at x mod 180 = 85..95 | 13-98 (86) | 21,113 / 15,902.7 | 1.362 hundredths | 99, 77-85, 97-98 |
-| [`atn-s`](#atn-s) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 26-98 (73) | 7,908 / 6,728.0 | 0.694 degrees | 99, 83-90, 98 |
-| [`atn-m`](#atn-m) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 22-98 (77) | 8,300 / 6,704.5 | 0.573 degrees | 99, 82-89, 98 |
-| [`atn-a`](#atn-a) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 18-98 (81) | 10,109 / 8,168.4 | 0.567 degrees | 99, 81-88, 98 |
-| [`at2-s`](#at2-s) | atan2(y, x) | y, x -999..999, not both 0; 0..359 degrees | 12-98 (87) | 7,924 / 7,139.2 | 0.699 degrees | 99, 77-78, 80-85, 98 |
+| [`sin-s`](#sin-s) | 1000 sin x | x 0..359 degrees; -999..999 | 66 | 112 / 70.8 | 3 thousandths | 99 |
+| **[`sin-m`](#sin-m)** | 1000 sin x | x 0..359 degrees; -999..999 | 72 | 112 / 73.5 | 1 thousandth | 99 |
+| [`sin-f`](#sin-f) | 1000 sin x | x 0..359 degrees; -999..999 | 81 | 52 / 45.5 | 1 thousandth | 99 |
+| [`scs-s`](#scs-s) | 1000 sin x and 1000 cos x | x 0..359 degrees; -999..999 | 67 | sin 112 / 70.8; cos 113 / 72.0 | sin 3; cos 3 thousandths | 99 |
+| **[`scs-a`](#scs-a)** | 1000 sin x and 1000 cos x | x 0..359 degrees; -999..999 | 77 | sin 112 / 73.5; cos 115 / 76.8 | sin 1; cos 1 thousandths | 99 |
+| [`tan-s`](#tan-s) | 100 tan x | x 0..359 degrees; -999..999, saturating at x mod 180 = 85..95 | 86 | 21,113 / 15,902.7 | 1.362 hundredths | 99 |
+| [`atn-s`](#atn-s) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 73 | 7,908 / 6,728.0 | 0.694 degrees | 99 |
+| [`atn-m`](#atn-m) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 77 | 8,300 / 6,704.5 | 0.573 degrees | 99 |
+| [`atn-a`](#atn-a) | atan(n / 100) | n -999..999 for n / 100; -84..84 degrees | 81 | 10,109 / 8,168.4 | 0.567 degrees | 99 |
+| [`at2-s`](#at2-s) | atan2(y, x) | y, x -999..999, not both 0; 0..359 degrees | 87 | 7,924 / 7,139.2 | 0.699 degrees | 99 |
 
 Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 instructions at most. For the sine and the cosine together, **scs-a**: the same table and error with a second entry, in 77 cells.
 
 - Instructions count from the routine's entry to its return jump, both included; the caller's JMP is not counted.
 - Errors for tan, atn and at2 are the distance from the exact value (a correctly rounded routine has at most 0.5); for the others, the difference from the correctly rounded value.
-- Destroys: cell 99 and the routine's own cells listed; no other cell.
+- Destroys: cell 99 and the routine's own work cells; no other cell.
 
 ## When to choose another
 
@@ -53,8 +53,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The result is in the accumulator when cell 05 runs: 500.
-- Destroys: cell 99 and its own cells 64-65, 67, 72-73, 97-98; the accumulator returns the result.
-- Cells: 33-98 (66).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 66.
 - Instructions: worst 112, mean 70.8.
 - Worst error: 3 in the last digit (thousandths) against the correctly rounded value, at x = 60; 196 of 360 inputs off.
 - Algorithm: sine table with linear interpolation; the angle mapped to b = 0..180 with sin x = sin(b - 90), so the table covers -90..90 degrees and no sign is restored; 19 entries at a step of 10 degrees, chosen by dynamic programming to minimise the worst interpolated error (as CARDIAC computes it, truncation included) rather than rounded; index and fraction by SFT 01 and SFT 33; table reads are built instructions; D r added in a loop, the sum offset by -700 to stay within a cell.
@@ -85,8 +85,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The result is in the accumulator when cell 05 runs: 500.
-- Destroys: cell 99 and its own cells 59-60, 62, 66-67, 89, 98; the accumulator returns the result.
-- Cells: 27-98 (72).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 72.
 - Instructions: worst 112, mean 73.5.
 - Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 1; 88 of 360 inputs off.
 - Algorithm: sine table with quarter-wave symmetry and linear interpolation; 19 entries of cos 5k over 0..90 degrees, chosen by dynamic programming to minimise the worst interpolated error rather than rounded; the doubled angle gives index and fraction by SFT 01 and SFT 33; table reads are built instructions; D r added in a loop.
@@ -117,8 +117,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The result is in the accumulator when cell 05 runs: 500.
-- Destroys: cell 99 and its own cells 48-49, 52-53, 58-60, 89, 98; the accumulator returns the result.
-- Cells: 18-98 (81).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 81.
 - Instructions: worst 52, mean 45.5.
 - Worst error: 1 in the last digit (thousandths) against the correctly rounded value, at x = 1; 88 of 360 inputs off.
 - Algorithm: sine table with quarter-wave symmetry and linear interpolation, as sin-m (the same 19 entries chosen by dynamic programming); D r added by a computed jump into a chain of eight ADD D, the sum kept in the accumulator.
@@ -153,8 +153,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The sine is in the accumulator when cell 05 runs (500 for x = 30), the cosine when cell 08 runs (869).
-- Destroys: cell 99 and its own cells 64-65, 67, 72-73, 97-98; the accumulator returns the result.
-- Cells: 32-98 (67).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 67.
 - Instructions, sin: worst 112, mean 70.8.
 - Instructions, cos: worst 113, mean 72.0.
 - Worst error, sin: 3 in the last digit (thousandths) against the correctly rounded value, at x = 60; 196 of 360 inputs off.
@@ -191,8 +191,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The sine is in the accumulator when cell 05 runs (500 for x = 30), the cosine when cell 08 runs (866).
-- Destroys: cell 99 and its own cells 58-59, 61, 66-67, 89, 98; the accumulator returns the result.
-- Cells: 22-98 (77).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 77.
 - Instructions, sin: worst 112, mean 73.5.
 - Instructions, cos: worst 115, mean 76.8.
 - Worst error, sin: 1 in the last digit (thousandths) against the correctly rounded value, at x = 1; 88 of 360 inputs off.
@@ -225,8 +225,8 @@ Default: **sin-m**, error 1 (one thousandth) at a modest size, 72 cells and 112 
   ```
 
   The result is in the accumulator when cell 05 runs: 100.
-- Destroys: cell 99 and its own cells 77-85, 97-98; the accumulator returns the result.
-- Cells: 13-98 (86).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 86.
 - Instructions: worst 21,113, mean 15,902.7.
 - Worst error: 1.362 hundredths from the exact value, at x = 54; 124 of 360 inputs not correctly rounded.
 - Algorithm: partial-fraction tangent (Euler): 100 tan d = A / (90 - d) - A / (90 + d) + R(d), A = 18000 / pi; computed as floor(5730 / (90 - d)) - floor(5730 / (90 + d)) + floor(6d / 17), constants by exhaustive search over the forms the multiply computes; each term an exact floor(m a / b) by a Bresenham-style error-accumulation loop that stores nothing larger than b; d mod 180 folded to 0..90, the sign put back by a stored ADD or SUB.
@@ -254,8 +254,8 @@ atan(n / 100), in whole degrees, by a polynomial of two terms.
   ```
 
   The result is in the accumulator when cell 05 runs: -60.
-- Destroys: cell 99 and its own cells 83-90, 98; the accumulator returns the result.
-- Cells: 26-98 (73).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 73.
 - Instructions: worst 7,908, mean 6,728.0.
 - Worst error: 0.694 degrees from the exact value, at n = -780; 282 of 1,999 inputs not correctly rounded.
 - Algorithm: Horner polynomial arctangent with octant folding: z = min(|n|, 100) / max(|n|, 100), t = atan z in tenths of a degree as a polynomial in z, each product an exact floor(m a / b) by a Bresenham-style loop; coefficients are minimax fits tuned by coordinate descent on the integer pipeline; then 90 - t for |n| > 100 and the sign; two terms, z (604 - 152 z).
@@ -284,8 +284,8 @@ atan(n / 100), in whole degrees, by a polynomial of three terms.
   ```
 
   The result is in the accumulator when cell 05 runs: -60.
-- Destroys: cell 99 and its own cells 82-89, 98; the accumulator returns the result.
-- Cells: 22-98 (77).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 77.
 - Instructions: worst 8,300, mean 6,704.5.
 - Worst error: 0.573 degrees from the exact value, at n = -675; 86 of 1,999 inputs not correctly rounded.
 - Algorithm: Horner polynomial arctangent with octant folding: z = min(|n|, 100) / max(|n|, 100), t = atan z in tenths of a degree as a polynomial in z, each product an exact floor(m a / b) by a Bresenham-style loop; coefficients are minimax fits tuned by coordinate descent on the integer pipeline; then 90 - t for |n| > 100 and the sign; three terms, z (588 - z (95 + 45 z)).
@@ -314,8 +314,8 @@ atan(n / 100), in whole degrees, by a polynomial of four terms.
   ```
 
   The result is in the accumulator when cell 05 runs: -60.
-- Destroys: cell 99 and its own cells 81-88, 98; the accumulator returns the result.
-- Cells: 18-98 (81).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result.
+- Cells: 81.
 - Instructions: worst 10,109, mean 8,168.4.
 - Worst error: 0.567 degrees from the exact value, at n = -102; 20 of 1,999 inputs not correctly rounded.
 - Algorithm: Horner polynomial arctangent with octant folding: z = min(|n|, 100) / max(|n|, 100), t = atan z in tenths of a degree as a polynomial in z, each product an exact floor(m a / b) by a Bresenham-style loop; coefficients are minimax fits tuned by coordinate descent on the integer pipeline; then 90 - t for |n| > 100 and the sign; four terms, z (574 - z (8 + z (197 - 81 z))).
@@ -347,8 +347,8 @@ atan2(y, x), the direction of (x, y) in whole degrees.
   ```
 
   The result is in the accumulator when cell 07 runs: 210.
-- Destroys: cell 99 and its own cells 77-78, 80-85, 98; the accumulator returns the result. x's operand cell 79 is kept, so a run of calls with one x stores it once.
-- Cells: 12-98 (87).
+- Destroys: cell 99 and its own work cells; the accumulator returns the result. x's operand cell 79 is kept, so a run of calls with one x stores it once.
+- Cells: 87.
 - Instructions: worst 7,924, mean 7,139.2.
 - Worst error: 0.699 degrees from the exact value, at y = -912, x = -890; 462,024 of 3,996,000 inputs not correctly rounded.
 - Algorithm: Horner polynomial arctangent with octant folding: a = min(|x|, |y|), b = max, t = atan(a / b) = z (604 - 152 z) tenths of a degree, each product an exact floor(m a / b) by a Bresenham-style loop; then the reflections 90 - t, -t, 180 - t and + 360.

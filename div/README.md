@@ -11,13 +11,13 @@ mean over the whole domain; the caller's set-up and JMP are not counted.
 
 | Routine | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
-| [udvm-s](udvm-s.cq) | x / y, x % y | x 0..999, y 1..999 | 17 (82-98) | 8,002 / 36.3 | own cells, 99 |
-| **[udvm-m](udvm-m.cq)** | **x / y, x % y** | **x 0..999, y 1..999** | **34 (65-98)** | **1,178 / 28.6** | **own cells, 99** |
-| [udvm-f](udvm-f.cq) | x / y, x % y | x 0..999, y 1..999 | 38 (61-98) | 275 / 30.3 | own cells, 99 |
-| [urem-s](urem-s.cq) | x % y | x 0..999, y 1..999 | 11 (88-98) | 3,005 / 17.9 | own cells, 99 |
-| [sdvm-s](sdvm-s.cq) | x / y, x % y | x, y -999..999, y not 0 | 47 (52-98) | 8,021 / 49.8 | own cells, 99, y |
-| [sdvm-f](sdvm-f.cq) | x / y, x % y | x, y -999..999, y not 0 | 71 (28-98) | 304 / 50.3 | own cells, 99, y |
-| [srem-s](srem-s.cq) | x % y | x, y -999..999, y not 0 | 24 (75-98) | 3,013 / 22.7 | own cells, 99, y |
+| [udvm-s](udvm-s.cq) | x / y, x % y | x 0..999, y 1..999 | 17 | 8,002 / 36.3 | own cells, 99 |
+| **[udvm-m](udvm-m.cq)** | **x / y, x % y** | **x 0..999, y 1..999** | **34** | **1,178 / 28.6** | **own cells, 99** |
+| [udvm-f](udvm-f.cq) | x / y, x % y | x 0..999, y 1..999 | 38 | 275 / 30.3 | own cells, 99 |
+| [urem-s](urem-s.cq) | x % y | x 0..999, y 1..999 | 11 | 3,005 / 17.9 | own cells, 99 |
+| [sdvm-s](sdvm-s.cq) | x / y, x % y | x, y -999..999, y not 0 | 47 | 8,021 / 49.8 | own cells, 99, y |
+| [sdvm-f](sdvm-f.cq) | x / y, x % y | x, y -999..999, y not 0 | 71 | 304 / 50.3 | own cells, 99, y |
+| [srem-s](srem-s.cq) | x % y | x, y -999..999, y not 0 | 24 | 3,013 / 22.7 | own cells, 99, y |
 
 The default is **udvm-m**: the lowest mean of the three divmods (28.6), a worst case under a seventh of udvm-s's,
 and 4 cells fewer than udvm-f.
@@ -160,8 +160,8 @@ cell  contents   notes
 ```
 
   Quotient in the accumulator, remainder in cell 95.
-- Destroys: the accumulator, its cells 82-98 except y in cell 96, and cell 99.
-- Cells: 17, 82-98.
+- Destroys: the accumulator, its own cells except y in cell 96, and cell 99.
+- Cells: 17.
 - Instructions: worst 8,002, mean 36.3.
 - Algorithm: repeated subtraction, counting: the count is the quotient, what is left the remainder.
 - Sources: [ANDREE].
@@ -188,8 +188,8 @@ cell  contents   notes
 ```
 
   Quotient in the accumulator, remainder in cell 87.
-- Destroys: the accumulator, its cells 65-98 except y in cell 88, and cell 99.
-- Cells: 34, 65-98.
+- Destroys: the accumulator, its own cells except y in cell 88, and cell 99.
+- Cells: 34.
 - Instructions: worst 1,178, mean 28.6.
 - Algorithm: one level of decimal long division: take 10y from x while x / 10 >= y, adding 10 to the quotient,
   then take y while it fits, adding 1. The test x / 10 >= y never forms 10y when it would not fit; 10y is stored
@@ -217,8 +217,8 @@ cell  contents   notes
 ```
 
   Quotient in the accumulator, remainder in cell 78.
-- Destroys: the accumulator, its cells 61-98 except y in cell 79, and cell 99.
-- Cells: 38, 61-98.
+- Destroys: the accumulator, its own cells except y in cell 79, and cell 99.
+- Cells: 38.
 - Instructions: worst 275, mean 30.3.
 - Algorithm: decimal long division, the quotient built by Horner's rule (q = 10q at each level, q + 1 at each
   subtraction).
@@ -244,8 +244,8 @@ cell  contents   notes
 ```
 
   Remainder in the accumulator.
-- Destroys: the accumulator, its cells 88-98 except y in cell 96, and cell 99.
-- Cells: 11, 88-98.
+- Destroys: the accumulator, its own cells except y in cell 96, and cell 99.
+- Cells: 11.
 - Instructions: worst 3,005, mean 17.9.
 - Algorithm: repeated subtraction with the running remainder in the accumulator, one y added back.
 - Sources: [ANDREE].
@@ -273,8 +273,8 @@ cell  contents   notes
 ```
 
   Quotient in the accumulator, remainder in cell 88.
-- Destroys: the accumulator, its cells 52-98, including y in cell 89 (negated when x < 0), and cell 99.
-- Cells: 47, 52-98.
+- Destroys: the accumulator, its own cells, including y in cell 89 (negated when x < 0), and cell 99.
+- Cells: 47.
 - Instructions: worst 8,021, mean 49.8.
 - Algorithm: repeated subtraction, counting up for y > 0 and down for y < 0, after x and y are both negated when
   x < 0; the remainder given x's sign at the end.
@@ -303,8 +303,8 @@ cell  contents   notes
 ```
 
   Quotient in the accumulator, remainder in cell 53.
-- Destroys: the accumulator, its cells 28-98, including y in cell 54 (made |y|), and cell 99.
-- Cells: 71, 28-98.
+- Destroys: the accumulator, its own cells, including y in cell 54 (made |y|), and cell 99.
+- Cells: 71.
 - Instructions: worst 304, mean 50.3.
 - Algorithm: decimal long division of the magnitudes, the quotient built by Horner's rule; the signs put back.
 - Sources: [IBM650]; [IBM1401]; [IBM1620].
@@ -329,8 +329,8 @@ cell  contents   notes
 ```
 
   Remainder in the accumulator.
-- Destroys: the accumulator, its cells 75-98, including y in cell 92 (made |y|), and cell 99.
-- Cells: 24, 75-98.
+- Destroys: the accumulator, its own cells, including y in cell 92 (made |y|), and cell 99.
+- Cells: 24.
 - Instructions: worst 3,013, mean 22.7.
 - Algorithm: repeated subtraction of |y| for x >= 0; for x < 0, repeated addition with the accumulator held at
   r - 1, so that TAC tests r + y <= 0.
