@@ -114,7 +114,7 @@ cell  contents   notes
 - Sources: none found for this form.
 - Correctness: exhaustive check on HEARTBURN of all 1,000 inputs, called through the calling convention one after
   another on one load, at the listed addresses and moved down to cell 20.
-- Size: inline model 7 to 15 cells. No routine of 6 cells or fewer exists, with SFT or without (exhaustive search).
+- Size: inline model 8 to 15 cells. No routine of 7 cells or fewer exists, with SFT or without (exhaustive search).
   Core 15; as called here, 20 cells.
 - Speed: exact, measured over the whole range.
 
@@ -139,7 +139,7 @@ cell  contents   notes
 - Sources: [COLLINS].
 - Correctness: exhaustive check on HEARTBURN of all 1,000 inputs, called through the calling convention one after
   another on one load, at the listed addresses and moved down to cell 20.
-- Size: not claimed smallest. Core 51 cells against the inline lower bound of 7 (as for uisr-s); as called here, 56
+- Size: not claimed smallest. Core 51 cells against the inline lower bound of 8 (as for uisr-s); as called here, 56
   cells.
 - Speed: exact, measured over the whole range.
 
