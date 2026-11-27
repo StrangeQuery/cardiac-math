@@ -25,6 +25,7 @@ signedness.
 |---|---|
 | `u` prefix | unsigned: non-negative operands only |
 | `s` prefix | signed: operands from -999 to 999 |
+| `l` after the prefix | long: the value is too wide for the accumulator, so it comes in two parts, thousands and last three digits |
 | `-s` suffix | smallest |
 | `-m` suffix | between the smallest and the fastest |
 | `-f` suffix | fastest |

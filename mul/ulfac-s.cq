@@ -1,0 +1,42 @@
+ulfac-s: n!, for n from 0 to 9, in two parts: the thousands and the last three digits.
+Cells 65-98. To call it, load n into the accumulator and JMP 65.
+It returns the last three digits of n! in the accumulator and its thousands in cell 94.
+It overwrites its own cells and cell 99.
+Size 34 cells. It runs at most 11 instructions, 11.0 on average, counted from cell 65 to the return jump in cell 98.
+Exact over the domain; outside it, n reads past the tables.
+
+cell  contents   notes
+ 65     292      ADD 92   cells 65-71: build CLA 72 + n in cell 95 and CLA 82 + n in cell 97, copy the return jump from cell 99 into cell 98, and jump to the loads
+ 66     695      STO 95
+ 67     293      ADD 93
+ 68     697      STO 97
+ 69     199      CLA 99
+ 70     698      STO 98
+ 71     895      JMP 95
+ 72     000      data: the thousands of 0! to 9!
+ 73     000
+ 74     000
+ 75     000
+ 76     000
+ 77     000
+ 78     000
+ 79     005
+ 80     040
+ 81     362
+ 82     001      data: the last three digits of 0! to 9!
+ 83     001
+ 84     002
+ 85     006
+ 86     024
+ 87     120
+ 88     720
+ 89     040
+ 90     320
+ 91     880
+ 92     172      data: CLA of the thousands table's first cell, an instruction the routine copies and changes
+ 93     010      data: 10, from the thousands table to the units table
+ 94     000      data: the thousands of n!, the second part of the answer
+ 95     000      set on every call: CLA of the thousands of n!
+ 96     694      STO 94   cell 96: the thousands into cell 94, between the two loads
+ 97     000      set on every call: CLA of the last three digits of n!
+ 98     000      set on every call: the jump back to the caller

@@ -10,6 +10,7 @@ Multiplication x * y, squaring x * x and the factorial n! on CARDIAC's three-dig
 | usqr-s | x * x | x from 0 to 31 | 17 | 289 / 149.5 | nothing |
 | usqr-f | x * x | x from 0 to 31 | 43 | 9 / 9.0 | nothing |
 | ufac-s | n! | n from 0 to 6 | 15 | 7 / 7.0 | nothing |
+| ulfac-s | n!, in two parts | n from 0 to 9 | 34 | 11 / 11.0 | nothing |
 
 Default: **umul-m**. Its worst case is 30 times better than umul-s's for 10 more cells, and it doesn't depend on
 the caller putting the smaller operand in y.
@@ -24,7 +25,8 @@ and its own work cells.
 - umul-f: inner loops where speed matters and 39 cells are free.
 - usqr-s: squares of 0..31 in 17 cells.
 - usqr-f: squares of 0..31 in 9 instructions when 43 cells are free.
-- ufac-s: the only factorial. 6! = 720 is the last that fits a cell, so it is a table of the seven.
+- ufac-s: n! for n up to 6. 6! = 720 is the last that fits a cell, so it is a table of the seven.
+- ulfac-s: n! for n up to 9, returned in two parts as a long. 9! = 362,880 is the last that fits two cells.
 - A multiply with y = x also squares, but usqr-s is 10 cells smaller than umul-m; 31 is the largest x whose square
   fits.
 
@@ -51,6 +53,7 @@ routine's own cells, and from every data word marked "an instruction the routine
 | usqr-s | none |
 | usqr-f | cell 64 (CLA 65) |
 | ufac-s | cell 96 (CLA 89) |
+| ulfac-s | cell 92 (CLA 72) |
 
 ## umul-s
 
@@ -208,6 +211,34 @@ cell  contents   notes
 - Correctness: exhaustive check on HEARTBURN of all 7 inputs, called through the calling convention one after
   another on one load, at the listed addresses and moved down to cell 20.
 - Size: not claimed smallest. As called here, 15 cells.
+- Speed: exact, measured over the whole range.
+
+## ulfac-s
+
+- Range: n from 0 to 9 (10 inputs). 10! = 3,628,800 does not fit two cells. Outside the range, n reads past the
+  tables.
+- Calling sample:
+
+```
+cell  contents   notes
+ 20     140      CLA 40   n into the accumulator
+ 21     865      JMP 65   call ulfac-s
+ 22     642      STO 42   the last three digits of n!, from the accumulator
+ 23     194      CLA 94   its thousands, from ulfac-s's cell 94
+ 24     641      STO 41
+```
+
+- Answer: n! as a long: its last three digits in the accumulator and its thousands in cell 94. 9! comes back as
+  362 and 880.
+- Destroys: nothing but cell 99 and its own work cells.
+- Cells: 34.
+- Instructions: worst 11, mean 11.0 (every call takes 11).
+- Algorithm: two tables, the thousands and the last three digits of the ten factorials, ten cells apart; one `CLA`
+  built from n reads the thousands, and the same word plus 10 reads the last three digits.
+- Sources: none found for this form.
+- Correctness: exhaustive check on HEARTBURN of all 10 inputs, both parts, called through the calling convention one
+  after another on one load, at the listed addresses and moved down to cell 20.
+- Size: not claimed smallest. As called here, 34 cells.
 - Speed: exact, measured over the whole range.
 
 ## Sources
