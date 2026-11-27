@@ -1,0 +1,23 @@
+ufac-s: n!, for n from 0 to 6.
+Cells 84-98. To call it, load n into the accumulator and JMP 84.
+It returns n! in the accumulator.
+It overwrites its own cells and cell 99.
+Size 15 cells. It runs at most 7 instructions, 7.0 on average, counted from cell 84 to the return jump in cell 98.
+Exact over the domain; outside it, n reads past the table.
+
+cell  contents   notes
+ 84     296      ADD 96   cells 84-88: build CLA 89 + n in cell 97, copy the return jump from cell 99 into cell 98, and jump to the load
+ 85     697      STO 97
+ 86     199      CLA 99
+ 87     698      STO 98
+ 88     897      JMP 97
+ 89     001      data: the table of factorials, 0! to 6!
+ 90     001
+ 91     002
+ 92     006
+ 93     024
+ 94     120
+ 95     720
+ 96     189      data: CLA of the table's first cell, an instruction the routine copies and changes
+ 97     000      set on every call: CLA of n!, which loads it into the accumulator
+ 98     000      set on every call: the jump back to the caller

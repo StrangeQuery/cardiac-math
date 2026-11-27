@@ -6,7 +6,7 @@ into your program.
 
 | Folder | What | Default |
 |---|---|---|
-| [mul](mul/) | x * y, x * x | `umul-m`: 27 cells, at most 267 instructions |
+| [mul](mul/) | x * y, x * x, n! | `umul-m`: 27 cells, at most 267 instructions |
 | [div](div/) | x / y and x % y together, remainder alone, division and remainder by constants | `udvm-m`: 34 cells, at most 1,178 instructions |
 | [sqrt](sqrt/) | integer square root, rounded down or to nearest | `uisq-s`: 18 cells, at most 322 instructions |
 | [sign](sign/) | -x, \|x\| | `sneg-s`, `sabs-s` |

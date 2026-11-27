@@ -1,6 +1,6 @@
 # mul
 
-Multiplication x * y and squaring x * x on CARDIAC's three-digit cells, one listing per variant.
+Multiplication x * y, squaring x * x and the factorial n! on CARDIAC's three-digit cells, one listing per variant.
 
 | Variant | Computes | Range | Cells | Worst / mean | Destroys |
 |---|---|---|---|---|---|
@@ -9,6 +9,7 @@ Multiplication x * y and squaring x * x on CARDIAC's three-digit cells, one list
 | umul-f | x * y | x, y >= 0, x * y <= 999 | 39 | 84 / 44.0 | y (cell 96) |
 | usqr-s | x * x | x from 0 to 31 | 17 | 289 / 149.5 | nothing |
 | usqr-f | x * x | x from 0 to 31 | 43 | 9 / 9.0 | nothing |
+| ufac-s | n! | n from 0 to 6 | 15 | 7 / 7.0 | nothing |
 
 Default: **umul-m**. Its worst case is 30 times better than umul-s's for 10 more cells, and it doesn't depend on
 the caller putting the smaller operand in y.
@@ -23,6 +24,7 @@ and its own work cells.
 - umul-f: inner loops where speed matters and 39 cells are free.
 - usqr-s: squares of 0..31 in 17 cells.
 - usqr-f: squares of 0..31 in 9 instructions when 43 cells are free.
+- ufac-s: the only factorial. 6! = 720 is the last that fits a cell, so it is a table of the seven.
 - A multiply with y = x also squares, but usqr-s is 10 cells smaller than umul-m; 31 is the largest x whose square
   fits.
 
@@ -48,6 +50,7 @@ routine's own cells, and from every data word marked "an instruction the routine
 | umul-f | cell 92 (JMP 82) |
 | usqr-s | none |
 | usqr-f | cell 64 (CLA 65) |
+| ufac-s | cell 96 (CLA 89) |
 
 ## umul-s
 
@@ -181,6 +184,30 @@ cell  contents   notes
   another on one load, at the listed addresses and moved down to cell 20.
 - Size: not claimed smallest. Inline core 38 cells against the inline lower bound of 8 (as for usqr-s). As called
   here, 43 cells.
+- Speed: exact, measured over the whole range.
+
+## ufac-s
+
+- Range: n from 0 to 6 (7 inputs). 7! = 5,040 does not fit a cell. Outside the range, n reads past the table.
+- Calling sample:
+
+```
+cell  contents   notes
+ 20     140      CLA 40   n into the accumulator
+ 21     884      JMP 84   call ufac-s
+ 22     642      STO 42   n!, from the accumulator
+```
+
+- Answer: n! in the accumulator.
+- Destroys: nothing but cell 99 and its own work cells.
+- Cells: 15.
+- Instructions: worst 7, mean 7.0 (every call takes 7).
+- Algorithm: a table of the seven factorials, read by a `CLA` built from n. n arrives in the accumulator, so the
+  routine adds the `CLA` straight to it, without storing n first as usqr-f stores x.
+- Sources: none found for this form.
+- Correctness: exhaustive check on HEARTBURN of all 7 inputs, called through the calling convention one after
+  another on one load, at the listed addresses and moved down to cell 20.
+- Size: not claimed smallest. As called here, 15 cells.
 - Speed: exact, measured over the whole range.
 
 ## Sources
